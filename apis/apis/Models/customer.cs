@@ -10,6 +10,8 @@
         public string latitude { get; set; }
         public int? OTP { get; set; }
 
+        public ICollection<dispatch_job>? dispatch_Jobs { get; set; }
+
 
     }
 }
