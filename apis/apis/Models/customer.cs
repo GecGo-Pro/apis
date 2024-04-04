@@ -9,6 +9,7 @@
         public string longitude { get; set; }
         public string latitude { get; set; }
         public int? OTP { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public ICollection<dispatch_job>? dispatch_Jobs { get; set; }
 

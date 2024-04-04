@@ -17,6 +17,7 @@ namespace apis.Models
         public string end_date { get; set; }
         public string? note { get; set; }
         public string? cancell_reason { get; set; }
+        public DateTime CreatedAt { get; set; }= DateTime.Now;
 
         public int customer_id { get; set; }
         public int dispatcher_id { get; set; }

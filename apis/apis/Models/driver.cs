@@ -17,6 +17,7 @@ namespace apis.Models
         public string latitude { get; set; }
         public int is_active { get; set; }
         public int status { get; set; }
+        public DateTime CreatedAt { get; set; }= DateTime.Now;
 
         [NotMapped]
         public IFormFile? UploadImage { get; set; }

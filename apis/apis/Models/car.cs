@@ -10,6 +10,7 @@ namespace apis.Models
         public string type{ get; set; }
         public string note{ get; set; }
         public string color{ get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public int driver_id{ get; set; }
 

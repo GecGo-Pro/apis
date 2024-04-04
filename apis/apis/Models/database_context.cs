@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+
+using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 
 namespace apis.Models
 {
@@ -7,6 +10,7 @@ namespace apis.Models
         public database_context(DbContextOptions options) : base(options)
         {
         }
+
 
         public DbSet<customer> customers { get; set; }
         public DbSet<dispatcher> dispatchers { get; set; }
