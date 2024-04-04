@@ -168,13 +168,6 @@ namespace apis.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("carid");
-
-                    b.HasIndex("customerid");
-
-                    b.HasIndex("dispatcherid");
-
-                    b.HasIndex("driverid");
 
                     b.ToTable("dispatch_Jobs");
                 });
