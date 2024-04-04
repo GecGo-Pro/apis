@@ -25,12 +25,12 @@ namespace apis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("color")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("driver_id")
                         .HasColumnType("int");
@@ -63,14 +63,14 @@ namespace apis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int?>("OTP")
                         .HasColumnType("int");
 
                     b.Property<string>("avatar")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("latitude")
                         .IsRequired()
@@ -99,9 +99,6 @@ namespace apis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("cancell_reason")
                         .HasColumnType("longtext");
 
@@ -110,6 +107,9 @@ namespace apis.Migrations
 
                     b.Property<int?>("carid")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("customer_id")
                         .HasColumnType("int");
@@ -133,9 +133,8 @@ namespace apis.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("end_date")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("end_date")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("end_latitude")
                         .IsRequired()
@@ -163,11 +162,18 @@ namespace apis.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("status")
-                        .HasColumnType("datetime(6)");
+                    b.Property<int>("status")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
+                    b.HasIndex("carid");
+
+                    b.HasIndex("customerid");
+
+                    b.HasIndex("dispatcherid");
+
+                    b.HasIndex("driverid");
 
                     b.ToTable("dispatch_Jobs");
                 });
@@ -178,11 +184,11 @@ namespace apis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("avatar")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("email")
                         .IsRequired()
@@ -211,14 +217,14 @@ namespace apis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("address")
                         .HasColumnType("longtext");
 
                     b.Property<string>("avatar")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("current_address")
                         .HasColumnType("longtext");

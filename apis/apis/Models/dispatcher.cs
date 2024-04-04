@@ -10,7 +10,8 @@ namespace apis.Models
         public string name { get; set; }
         public string? avatar { get; set; }
         public string password { get; set; }
-        public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
+
+        public DateTime created_at { get; set; }= DateTime.UtcNow;
 
         [NotMapped]
         public IFormFile? UploadImage { get; set; }

@@ -2,7 +2,7 @@
 
 namespace apis.Models
 {
-    public class CarSeedData
+    public class Dispatch_jobSeedData
     {
     }
 }

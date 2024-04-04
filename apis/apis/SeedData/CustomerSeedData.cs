@@ -4,9 +4,9 @@ namespace apis.Models
 {
     public class CustomerSeedData
     {
-        public customer[] Customer()
+/*        public customer[] Customer()
         {
 
-        }
+        }*/
     }
 }

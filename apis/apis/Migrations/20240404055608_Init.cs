@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class DBInit : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,7 @@ namespace apis.Migrations
                     latitude = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OTP = table.Column<int>(type: "int", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +56,7 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,7 +86,7 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     is_active = table.Column<int>(type: "int", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,16 +108,15 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     color = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     driver_id = table.Column<int>(type: "int", nullable: false),
-                    driverid = table.Column<int>(type: "int", nullable: true)
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_cars", x => x.id);
                     table.ForeignKey(
                         name: "FK_cars_drivers_driverid",
-                        column: x => x.driverid,
+                        column: x => x.driver_id,
                         principalTable: "drivers",
                         principalColumn: "id");
                 })
@@ -141,45 +140,40 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     end_address = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    status = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: false),
                     start_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    end_date = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    end_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     note = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     cancell_reason = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     customer_id = table.Column<int>(type: "int", nullable: false),
                     dispatcher_id = table.Column<int>(type: "int", nullable: false),
                     driver_id = table.Column<int>(type: "int", nullable: true),
                     car_id = table.Column<int>(type: "int", nullable: true),
-                    customerid = table.Column<int>(type: "int", nullable: true),
-                    dispatcherid = table.Column<int>(type: "int", nullable: true),
-                    driverid = table.Column<int>(type: "int", nullable: true),
-                    carid = table.Column<int>(type: "int", nullable: true)
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_dispatch_Jobs", x => x.id);
                     table.ForeignKey(
                         name: "FK_dispatch_Jobs_cars_carid",
-                        column: x => x.carid,
+                        column: x => x.car_id,
                         principalTable: "cars",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_dispatch_Jobs_customers_customerid",
-                        column: x => x.customerid,
+                        column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_dispatch_Jobs_dispatchers_dispatcherid",
-                        column: x => x.dispatcherid,
+                        column: x => x.dispatcher_id,
                         principalTable: "dispatchers",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_dispatch_Jobs_drivers_driverid",
-                        column: x => x.driverid,
+                        column: x => x.driver_id,
                         principalTable: "drivers",
                         principalColumn: "id");
                 })
@@ -188,27 +182,27 @@ namespace apis.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_cars_driverid",
                 table: "cars",
-                column: "driverid");
+                column: "driver_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_dispatch_Jobs_carid",
                 table: "dispatch_Jobs",
-                column: "carid");
+                column: "car_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_dispatch_Jobs_customerid",
                 table: "dispatch_Jobs",
-                column: "customerid");
+                column: "customer_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_dispatch_Jobs_dispatcherid",
                 table: "dispatch_Jobs",
-                column: "dispatcherid");
+                column: "dispatcher_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_dispatch_Jobs_driverid",
                 table: "dispatch_Jobs",
-                column: "driverid");
+                column: "driver_id");
         }
 
         /// <inheritdoc />
