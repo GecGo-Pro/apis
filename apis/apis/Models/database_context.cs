@@ -5,18 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace apis.Models
 {
-    public class database_context : DbContext
+    public class Database_context : DbContext
     {
-        public database_context(DbContextOptions options) : base(options)
+        public Database_context(DbContextOptions options) : base(options)
         {
         }
 
 
-        public DbSet<customer> customers { get; set; }
-        public DbSet<dispatcher> dispatchers { get; set; }
-        public DbSet<driver> drivers { get; set; }
-        public DbSet<car> cars { get; set; }
-        public DbSet<dispatch_job> dispatch_Jobs { get; set; }
+        public DbSet<Customer> customers { get; set; }
+        public DbSet<Dispatcher> dispatchers { get; set; }
+        public DbSet<Driver> drivers { get; set; }
+        public DbSet<Car> cars { get; set; }
+        public DbSet<Dispatch_job> dispatch_jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,20 +2,20 @@
 
 namespace apis.Models
 {
-    public class dispatcher
+    public class Dispatcher
     {
         public int id { get; set; }
-        public string phone_number { get; set; }
-        public string email { get; set; }
-        public string name { get; set; }
+        public required string phone_number { get; set; }
+        public required string email { get; set; }
+        public required string name { get; set; }
         public string? avatar { get; set; }
-        public string password { get; set; }
+        public int? OTP { get; set; }
 
         public DateTime created_at { get; set; }= DateTime.UtcNow;
 
         [NotMapped]
-        public IFormFile? UploadImage { get; set; }
+        public IFormFile? upload_image { get; set; }
 
-        public ICollection<dispatch_job>? dispatch_jobs { get; set; }
+        public ICollection<Dispatch_job>? dispatch_jobs { get; set; }
     }
 }

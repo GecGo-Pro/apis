@@ -4,26 +4,26 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace apis.Models
 {
-    public class driver
+    public class Driver
     {
 
         public int  id { get; set; }
-        public string phone_number{ get; set; }
-        public string name { get; set; }
-        public string? address { get; set; }
+        public required string phone_number{ get; set; }
+        public required string name { get; set; }
+        public required string? address { get; set; }
         public string? current_address { get; set; }
         public string? avatar { get; set; }
-        public string longitude { get; set; }
-        public string latitude { get; set; }
+        public required string longitude { get; set; }
+        public required string latitude { get; set; }
         public int is_active { get; set; }
         public int status { get; set; }
 
-        public DateTime created_at { get; set; }= DateTime.UtcNow;
+        public DateTime created_at { get; set; } = DateTime.UtcNow;
 
         [NotMapped]
-        public IFormFile? UploadImage { get; set; }
+        public IFormFile? upload_image { get; set; }
 
-        public ICollection<dispatch_job>? dispatch_Jobs { get; set; }
-        public ICollection<car>? cars { get; set; }
+        public ICollection<Dispatch_job>? dispatch_jobs { get; set; }
+        public ICollection<Car>? cars { get; set; }
     }
 }

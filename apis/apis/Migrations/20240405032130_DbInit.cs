@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class DbInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,8 +54,7 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     avatar = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    password = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OTP = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -123,7 +122,7 @@ namespace apis.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "dispatch_Jobs",
+                name: "dispatch_jobs",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -151,28 +150,28 @@ namespace apis.Migrations
                     dispatcher_id = table.Column<int>(type: "int", nullable: false),
                     driver_id = table.Column<int>(type: "int", nullable: true),
                     car_id = table.Column<int>(type: "int", nullable: true),
-                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_dispatch_Jobs", x => x.id);
+                    table.PrimaryKey("PK_dispatch_jobs", x => x.id);
                     table.ForeignKey(
-                        name: "FK_dispatch_Jobs_cars_carid",
+                        name: "FK_dispatch_jobs_cars_carid",
                         column: x => x.car_id,
                         principalTable: "cars",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_dispatch_Jobs_customers_customerid",
+                        name: "FK_dispatch_jobs_customers_customerid",
                         column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_dispatch_Jobs_dispatchers_dispatcherid",
+                        name: "FK_dispatch_jobs_dispatchers_dispatcherid",
                         column: x => x.dispatcher_id,
                         principalTable: "dispatchers",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_dispatch_Jobs_drivers_driverid",
+                        name: "FK_dispatch_jobs_drivers_driverid",
                         column: x => x.driver_id,
                         principalTable: "drivers",
                         principalColumn: "id");
@@ -185,23 +184,23 @@ namespace apis.Migrations
                 column: "driver_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_dispatch_Jobs_carid",
-                table: "dispatch_Jobs",
+                name: "IX_dispatch_jobs_carid",
+                table: "dispatch_jobs",
                 column: "car_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_dispatch_Jobs_customerid",
-                table: "dispatch_Jobs",
+                name: "IX_dispatch_jobs_customerid",
+                table: "dispatch_jobs",
                 column: "customer_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_dispatch_Jobs_dispatcherid",
-                table: "dispatch_Jobs",
+                name: "IX_dispatch_jobs_dispatcherid",
+                table: "dispatch_jobs",
                 column: "dispatcher_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_dispatch_Jobs_driverid",
-                table: "dispatch_Jobs",
+                name: "IX_dispatch_jobs_driverid",
+                table: "dispatch_jobs",
                 column: "driver_id");
         }
 
@@ -209,7 +208,7 @@ namespace apis.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "dispatch_Jobs");
+                name: "dispatch_jobs");
 
             migrationBuilder.DropTable(
                 name: "cars");

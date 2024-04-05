@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace apis.Models
 {
-    public class dispatch_job
+    public class Dispatch_job
     {
         public int id { get; set; }
-        public string start_longitude{ get; set; }
-        public string start_latitude { get; set; }
-        public string end_longitude { get; set; }
-        public string end_latitude { get; set; }
-        public string start_address { get; set; }
-        public string end_address { get; set; }
+        public required string start_longitude{ get; set; }
+        public required string start_latitude { get; set; }
+        public required string end_longitude { get; set; }
+        public required string end_latitude { get; set; }
+        public required string start_address { get; set; }
+        public required string end_address { get; set; }
         public int status { get; set; }
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
@@ -26,12 +26,12 @@ namespace apis.Models
         public DateTime created_at { get; set; } = DateTime.UtcNow;
 
         [NotMapped]
-        public IFormFile? UploadImage { get; set; }
+        public IFormFile? IUpload_image { get; set; }
 
 
-        public customer? customer { get; set; }
-        public dispatcher? dispatcher { get; set; }
-        public driver? driver { get; set; }
-        public car? car { get; set; }
+        public Customer? customer { get; set; }
+        public Dispatcher? dispatcher { get; set; }
+        public Driver? driver { get; set; }
+        public Car? car { get; set; }
     }
 }

@@ -10,9 +10,9 @@ using apis.Models;
 
 namespace apis.Migrations
 {
-    [DbContext(typeof(database_context))]
-    [Migration("20240404055608_Init")]
-    partial class Init
+    [DbContext(typeof(Database_context))]
+    [Migration("20240405032130_DbInit")]
+    partial class DbInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace apis.Migrations
                 .HasAnnotation("ProductVersion", "7.0.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("apis.Models.car", b =>
+            modelBuilder.Entity("apis.Models.Car", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace apis.Migrations
                     b.ToTable("cars");
                 });
 
-            modelBuilder.Entity("apis.Models.customer", b =>
+            modelBuilder.Entity("apis.Models.Customer", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +96,7 @@ namespace apis.Migrations
                     b.ToTable("customers");
                 });
 
-            modelBuilder.Entity("apis.Models.dispatch_job", b =>
+            modelBuilder.Entity("apis.Models.Dispatch_job", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -178,10 +178,10 @@ namespace apis.Migrations
 
                     b.HasIndex("driverid");
 
-                    b.ToTable("dispatch_Jobs");
+                    b.ToTable("dispatch_jobs");
                 });
 
-            modelBuilder.Entity("apis.Models.dispatcher", b =>
+            modelBuilder.Entity("apis.Models.Dispatcher", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -214,7 +214,7 @@ namespace apis.Migrations
                     b.ToTable("dispatchers");
                 });
 
-            modelBuilder.Entity("apis.Models.driver", b =>
+            modelBuilder.Entity("apis.Models.Driver", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -259,31 +259,31 @@ namespace apis.Migrations
                     b.ToTable("drivers");
                 });
 
-            modelBuilder.Entity("apis.Models.car", b =>
+            modelBuilder.Entity("apis.Models.Car", b =>
                 {
-                    b.HasOne("apis.Models.driver", "driver")
+                    b.HasOne("apis.Models.Driver", "driver")
                         .WithMany("cars")
                         .HasForeignKey("driverid");
 
                     b.Navigation("driver");
                 });
 
-            modelBuilder.Entity("apis.Models.dispatch_job", b =>
+            modelBuilder.Entity("apis.Models.Dispatch_job", b =>
                 {
-                    b.HasOne("apis.Models.car", "car")
-                        .WithMany("dispatch_Jobs")
+                    b.HasOne("apis.Models.Car", "car")
+                        .WithMany("dispatch_jobs")
                         .HasForeignKey("carid");
 
-                    b.HasOne("apis.Models.customer", "customer")
+                    b.HasOne("apis.Models.Customer", "customer")
                         .WithMany("dispatch_Jobs")
                         .HasForeignKey("customerid");
 
-                    b.HasOne("apis.Models.dispatcher", "dispatcher")
+                    b.HasOne("apis.Models.Dispatcher", "dispatcher")
                         .WithMany("dispatch_jobs")
                         .HasForeignKey("dispatcherid");
 
-                    b.HasOne("apis.Models.driver", "driver")
-                        .WithMany("dispatch_Jobs")
+                    b.HasOne("apis.Models.Driver", "driver")
+                        .WithMany("dispatch_jobs")
                         .HasForeignKey("driverid");
 
                     b.Navigation("car");
@@ -295,26 +295,26 @@ namespace apis.Migrations
                     b.Navigation("driver");
                 });
 
-            modelBuilder.Entity("apis.Models.car", b =>
-                {
-                    b.Navigation("dispatch_Jobs");
-                });
-
-            modelBuilder.Entity("apis.Models.customer", b =>
-                {
-                    b.Navigation("dispatch_Jobs");
-                });
-
-            modelBuilder.Entity("apis.Models.dispatcher", b =>
+            modelBuilder.Entity("apis.Models.Car", b =>
                 {
                     b.Navigation("dispatch_jobs");
                 });
 
-            modelBuilder.Entity("apis.Models.driver", b =>
+            modelBuilder.Entity("apis.Models.Customer", b =>
+                {
+                    b.Navigation("dispatch_Jobs");
+                });
+
+            modelBuilder.Entity("apis.Models.Dispatcher", b =>
+                {
+                    b.Navigation("dispatch_jobs");
+                });
+
+            modelBuilder.Entity("apis.Models.Driver", b =>
                 {
                     b.Navigation("cars");
 
-                    b.Navigation("dispatch_Jobs");
+                    b.Navigation("dispatch_jobs");
                 });
 #pragma warning restore 612, 618
         }
