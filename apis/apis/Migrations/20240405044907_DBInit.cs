@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class DbInit : Migration
+    public partial class DBInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     latitude = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OTP = table.Column<int>(type: "int", nullable: true),
+                    otp = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -48,13 +48,13 @@ namespace apis.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     phone_number = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    email = table.Column<string>(type: "longtext", nullable: false)
+                    email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     avatar = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OTP = table.Column<int>(type: "int", nullable: true),
+                    otp = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -72,6 +72,8 @@ namespace apis.Migrations
                     phone_number = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     address = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -103,9 +105,9 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     type = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    note = table.Column<string>(type: "longtext", nullable: false)
+                    note = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    color = table.Column<string>(type: "longtext", nullable: false)
+                    color = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     driver_id = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -150,7 +152,7 @@ namespace apis.Migrations
                     dispatcher_id = table.Column<int>(type: "int", nullable: false),
                     driver_id = table.Column<int>(type: "int", nullable: true),
                     car_id = table.Column<int>(type: "int", nullable: true),
-                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,6 +204,34 @@ namespace apis.Migrations
                 name: "IX_dispatch_jobs_driverid",
                 table: "dispatch_jobs",
                 column: "driver_id");
+
+
+         
+            migrationBuilder.InsertData(
+                table: "customers",
+                columns: new[] { "id", "avatar", "created_at", "latitude", "longitude", "name", "otp", "phone_number" },
+                values: new object[] { 1, "", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3571), "10.800102", "106.665794", "Nguyen Van A", 123456, "0123456789" });
+
+            migrationBuilder.InsertData(
+                table: "dispatchers",
+                columns: new[] { "id", "avatar", "created_at", "email", "name", "otp", "phone_number" },
+                values: new object[] { 1, "", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3940), "", "Nguyen Van B", 654321, "01212345678" });
+
+            migrationBuilder.InsertData(
+                table: "drivers",
+                columns: new[] { "id", "address", "avatar", "created_at", "current_address", "is_active", "latitude", "longitude", "name", "password", "phone_number", "status" },
+                values: new object[] { 1, "HCM", null, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3981), null, 1, "10.800450", "106.666357", "Nguyen Van C", "abcd", "1234234523", 0 });
+           
+            migrationBuilder.InsertData(
+             table: "cars",
+             columns: new[] { "id", "color", "created_at", "driver_id", "note", "number_plate", "type" },
+             values: new object[] { 1, null, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(4018), 1, "", "49A 222222", "6 cho" });
+
+            migrationBuilder.InsertData(
+                table: "dispatch_jobs",
+                columns: new[] { "id", "cancell_reason", "car_id", "created_at", "customer_id", "dispatcher_id", "driver_id", "end_address", "end_date", "end_latitude", "end_longitude", "note", "start_address", "start_date", "start_latitude", "start_longitude", "status" },
+                values: new object[] { 1, null, 1, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(4053), 1, 1, 1, "", null, "10.801418", "106.661530", null, "", null, "10.800102", "106.665794", 1 });
+
         }
 
         /// <inheritdoc />

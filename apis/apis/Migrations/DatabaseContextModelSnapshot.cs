@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using apis.Models;
 
@@ -10,12 +9,10 @@ using apis.Models;
 
 namespace apis.Migrations
 {
-    [DbContext(typeof(Database_context))]
-    [Migration("20240405032130_DbInit")]
-    partial class DbInit
+    [DbContext(typeof(DatabaseContext))]
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +26,6 @@ namespace apis.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("color")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("created_at")
@@ -42,7 +38,6 @@ namespace apis.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("note")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("number_plate")
@@ -66,9 +61,6 @@ namespace apis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("OTP")
-                        .HasColumnType("int");
-
                     b.Property<string>("avatar")
                         .HasColumnType("longtext");
 
@@ -87,6 +79,9 @@ namespace apis.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("otp")
+                        .HasColumnType("int");
+
                     b.Property<string>("phone_number")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -96,7 +91,7 @@ namespace apis.Migrations
                     b.ToTable("customers");
                 });
 
-            modelBuilder.Entity("apis.Models.Dispatch_job", b =>
+            modelBuilder.Entity("apis.Models.DispatchJob", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -194,16 +189,14 @@ namespace apis.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("email")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int?>("otp")
+                        .HasColumnType("int");
 
                     b.Property<string>("phone_number")
                         .IsRequired()
@@ -247,6 +240,10 @@ namespace apis.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("phone_number")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -268,7 +265,7 @@ namespace apis.Migrations
                     b.Navigation("driver");
                 });
 
-            modelBuilder.Entity("apis.Models.Dispatch_job", b =>
+            modelBuilder.Entity("apis.Models.DispatchJob", b =>
                 {
                     b.HasOne("apis.Models.Car", "car")
                         .WithMany("dispatch_jobs")

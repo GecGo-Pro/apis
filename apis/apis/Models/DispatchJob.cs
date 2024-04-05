@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace apis.Models
 {
-    public class Dispatch_job
+    public class DispatchJob
     {
         public int id { get; set; }
         public required string start_longitude{ get; set; }
@@ -24,9 +24,6 @@ namespace apis.Models
         public int? car_id { get; set; }
 
         public DateTime created_at { get; set; } = DateTime.UtcNow;
-
-        [NotMapped]
-        public IFormFile? IUpload_image { get; set; }
 
 
         public Customer? customer { get; set; }

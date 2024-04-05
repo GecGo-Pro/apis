@@ -1,4 +1,6 @@
-﻿namespace apis.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace apis.Models
 {
     public class Customer
     {
@@ -8,11 +10,14 @@
         public string? avatar { get; set; } 
         public required string longitude { get; set; }
         public required string latitude { get; set; }
-        public int? OTP { get; set; }
+        public int? otp { get; set; }
 
         public DateTime created_at { get; set; } = DateTime.UtcNow;
 
-        public ICollection<Dispatch_job>? dispatch_Jobs { get; set; }
+        [NotMapped]
+        public IFormFile? upload_image { get; set; }
+
+        public ICollection<DispatchJob>? dispatch_Jobs { get; set; }
 
 
     }

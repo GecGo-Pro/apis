@@ -10,6 +10,7 @@ namespace apis.Models
         public int  id { get; set; }
         public required string phone_number{ get; set; }
         public required string name { get; set; }
+        public required string password { get; set; }
         public required string? address { get; set; }
         public string? current_address { get; set; }
         public string? avatar { get; set; }
@@ -23,7 +24,7 @@ namespace apis.Models
         [NotMapped]
         public IFormFile? upload_image { get; set; }
 
-        public ICollection<Dispatch_job>? dispatch_jobs { get; set; }
+        public ICollection<DispatchJob>? dispatch_jobs { get; set; }
         public ICollection<Car>? cars { get; set; }
     }
 }
