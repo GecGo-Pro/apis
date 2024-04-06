@@ -880,7 +880,7 @@
           }
         }
       },
-      "Twilio/7.0.4": {
+      "Twilio/7.0.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.IdentityModel.Tokens": "6.19.0",
@@ -3194,10 +3194,10 @@
         "system.threading.tasks.nuspec"
       ]
     },
-    "Twilio/7.0.4": {
-      "sha512": "1ekY2+q+gMArUJCVGv6bjxCrC/x2vXqvCdnb+MfaJTjQEhPyc1VGsYUhJ/eJKv6zNmGmULJGIzUon1EjvxJh/w==",
+    "Twilio/7.0.2": {
+      "sha512": "+Ljhq8X0xjUIFoY34EKMh/lp+qomDn0CnMW0ZQAgqkUrDu27+6YOL2b4RMSPVJNHU0nzbsjB4Seb0WP7ZpM4fw==",
       "type": "package",
-      "path": "twilio/7.0.4",
+      "path": "twilio/7.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3209,7 +3209,7 @@
         "lib/net6.0/Twilio.xml",
         "lib/netstandard2.1/Twilio.dll",
         "lib/netstandard2.1/Twilio.xml",
-        "twilio.7.0.4.nupkg.sha512",
+        "twilio.7.0.2.nupkg.sha512",
         "twilio.nuspec"
       ]
     }
@@ -3220,7 +3220,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.17",
       "Pomelo.EntityFrameworkCore.MySql >= 7.0.0",
       "Swashbuckle.AspNetCore >= 6.5.0",
-      "Twilio >= 7.0.4"
+      "Twilio >= 7.0.2"
     ]
   },
   "packageFolders": {
@@ -3282,7 +3282,7 @@
           },
           "Twilio": {
             "target": "Package",
-            "version": "[7.0.4, )"
+            "version": "[7.0.2, )"
           }
         },
         "imports": [

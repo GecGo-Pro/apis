@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using backend.ResponseData;
 using Microsoft.AspNetCore.Mvc;
 using Twilio.Clients;
 using Twilio.Rest.Api.V2010.Account;
@@ -15,16 +15,25 @@ namespace apis.Controllers
             this.client = client;
         }
         [HttpPost]
-        public IActionResult SendOTP(string phone)
+        public  ActionResult SendOTP(string phone)
         {
-            MessageResource.Create
+            var send_otp =  MessageResource.Create
                 (
                     to: phone,
                     from: "+12058582939",
-                    body: "hello",
+                    body: "OTP: ",
                     client: client
                 );
-            return Ok();
+            if (send_otp != null)
+            {
+                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successfully", "OTP", null);
+                return Ok(response);
+            }
+            else
+            {
+                var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Send OTP Fail", "OTP", null);
+                return Ok(response);
+            }
         }
     }
 }
