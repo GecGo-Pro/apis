@@ -17,23 +17,32 @@ namespace apis.Controllers
         [HttpPost]
         public  ActionResult SendOTP(string phone)
         {
-            var send_otp =  MessageResource.Create
-                (
-                    to: phone,
-                    from: "+12058582939",
-                    body: "OTP: ",
-                    client: client
-                );
-            if (send_otp != null)
+            try
             {
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successfully", "OTP", null);
-                return Ok(response);
+                var send_otp = MessageResource.Create
+                               (
+                                   to: phone,
+                                   from: "+12058582939",
+                                   body: "OTP: ",
+                                   client: client
+                               );
+                if (send_otp != null)
+                {
+                    var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successfully", "OTP", null);
+                    return Ok(response);
+                }
+                else
+                {
+                    var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Send OTP Fail", "OTP", null);
+                    return Ok(response);
+                }
             }
-            else
+            catch (Exception e)
             {
                 var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Send OTP Fail", "OTP", null);
                 return Ok(response);
             }
+           
         }
     }
 }
