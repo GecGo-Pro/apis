@@ -25,7 +25,7 @@ If you found this project useful, then please consider giving it a ⭐ on Github
                                         -> launchSettings.json
                                             -> "ASPNETCORE_ENVIRONMENT": "Development"
 
-            $ Enviroment Dev: Folder  Properties
+            $ Enviroment Pro: Folder  Properties
                                         -> launchSettings.json
                                                 -> "ASPNETCORE_ENVIRONMENT": "Production"
 
