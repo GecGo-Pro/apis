@@ -21,6 +21,14 @@ If you found this project useful, then please consider giving it a ⭐ on Github
             $ After finishing, Start the ASP.NET server
             $ With Visual Studio Code -> terminal -> "dotnet run"
 
+            $ Enviroment Dev: Folder  Properties
+                                        -> launchSettings.json
+                                            -> "ASPNETCORE_ENVIRONMENT": "Development"
+
+            $ Enviroment Dev: Folder  Properties
+                                        -> launchSettings.json
+                                                -> "ASPNETCORE_ENVIRONMENT": "Production"
+
        
 ## Techs:
        -   mySql. 
