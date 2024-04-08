@@ -231,7 +231,12 @@ namespace apis.Migrations
                 table: "dispatch_jobs",
                 columns: new[] { "id", "cancell_reason", "car_id", "created_at", "customer_id", "dispatcher_id", "driver_id", "end_address", "end_date", "end_latitude", "end_longitude", "note", "start_address", "start_date", "start_latitude", "start_longitude", "status" },
                 values: new object[] { 1, null, 1, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(4053), 1, 1, 1, "", null, "10.801418", "106.661530", null, "", null, "10.800102", "106.665794", 1 });
-
+          
+            migrationBuilder.AddColumn<DateTime>(
+                       name: "otp_life",
+                       table: "customers",
+                       nullable: true,
+                       type: "datetime(6)");
         }
 
         /// <inheritdoc />

@@ -1,5 +1,8 @@
+using apis.IRepository;
 using apis.Models;
+using apis.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Twilio.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,15 +21,21 @@ builder.Services.AddDbContextPool<DatabaseContext>
     (d => d.UseMySql(builder.Configuration.GetConnectionString("myConnect"),
     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("myConnect"))));
 
+builder.Services.AddScoped<ICustomerRepo, CustomerService>();
+
+
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+/*if (app.Environment.IsProduction())
+{*/
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 
