@@ -1,7 +1,11 @@
+using apis.Controllers;
 using apis.IRepository;
 using apis.Models;
 using apis.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 using Twilio.Clients;
 
@@ -20,6 +24,34 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextPool<DatabaseContext>
     (d => d.UseMySql(builder.Configuration.GetConnectionString("myConnect"),
     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("myConnect"))));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
+{
+    option.RequireHttpsMetadata = false;
+    option.SaveToken = true;
+    option.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy("MyAppCors", policy =>
+    {
+        policy.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
+    });
+});
+
 
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
 

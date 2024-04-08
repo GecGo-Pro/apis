@@ -6,6 +6,7 @@ namespace apis.IRepository
     {
         Task<bool> CheckExist(string phone);
         Task<Customer> CheckOTP(string phone,string otp);
-        Task<string> CreateOTP(string phone); 
+        Task<string> CreateOTP(string phone);
+        string TokenCustomer(Customer result_otp);
     }
 }

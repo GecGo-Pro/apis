@@ -27,18 +27,17 @@ namespace apis.Controllers
         {
             try
             {
-                if (Regex.IsMatch(phone, @"^\d+$"))
+                if (Regex.IsMatch(phone, @"^0\d{8,10}$"))
                 {
                     bool check_existed = await cusRepo.CheckExist(phone);
                     if (check_existed)
                     {
                         string set_otp = await cusRepo.CreateOTP(phone);
-                        string name = _configuration["ENABLE_OTP_SENDING"];
                         if (set_otp != null)
                         {
                             if (_configuration["ENABLE_OTP_SENDING"]?.ToLower() == "true")
                             {
-                                var send_otp = MessageResource.Create(to: phone, from: "+12058582939", body: "OTP: ", client: client);
+                                var send_otp = MessageResource.Create(to:"+84"+ phone, from: "+12058582939", body: "OTP: ", client: client);
                                 if (send_otp != null)
                                 {
                                     var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successfully", "OTP:" + set_otp + " time :" + DateTime.UtcNow, null);
@@ -70,7 +69,7 @@ namespace apis.Controllers
                 }
                 else
                 {
-                    var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Phone invalid", phone, null);
+                    var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Phone invalid ", phone, null);
                     return BadRequest(response);
                 }
 
@@ -97,7 +96,8 @@ namespace apis.Controllers
                         {
                             if (DateTime.Compare(result_otp.otp_life, DateTime.UtcNow) > 0)
                             {
-                                var response = new ResponseData<Customer>(StatusCodes.Status200OK, "Login Successfull", result_otp, null);
+                                string token = cusRepo.TokenCustomer(result_otp);
+                                var response = new ResponseData<string>(StatusCodes.Status200OK, "Login Successfull", token, null);
                                 return Ok(response);
                             }
                             else
