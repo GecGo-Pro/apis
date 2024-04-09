@@ -54,6 +54,7 @@ builder.Services.AddCors(o =>
 
 
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
+builder.Services.AddScoped<IAuthRepo, AuthService>();
 
 
 builder.Services.AddControllers().AddJsonOptions(x =>

@@ -13,12 +13,14 @@ namespace apis.Controllers
     {
         private readonly ITwilioRestClient client;
         private readonly ICustomerRepo cusRepo;
+        private readonly IAuthRepo authRepo;
         private readonly IConfiguration _configuration;
 
-        public SendSmsController(ITwilioRestClient client, ICustomerRepo cusRepo, IConfiguration configuration)
+        public SendSmsController(ITwilioRestClient client, ICustomerRepo cusRepo, IAuthRepo authRepo, IConfiguration configuration)
         {
             this.client = client;
             this.cusRepo = cusRepo;
+            this.authRepo = authRepo;
             _configuration = configuration;
         }
 
@@ -75,7 +77,7 @@ namespace apis.Controllers
 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Fail", "OTP", null);
                 return BadRequest(response);
@@ -96,7 +98,7 @@ namespace apis.Controllers
                         {
                             if (DateTime.Compare(result_otp.otp_life, DateTime.UtcNow) > 0)
                             {
-                                string token = cusRepo.TokenCustomer(result_otp);
+                                string token = authRepo.TokenCustomer(result_otp);
                                 var response = new ResponseData<string>(StatusCodes.Status200OK, "Login Successfull", token, null);
                                 return Ok(response);
                             }
@@ -124,7 +126,7 @@ namespace apis.Controllers
                     return BadRequest(response);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 var response = new ResponseData<string>(StatusCodes.Status400BadRequest, "Fail", null, "Check OTP Fail");
                 return BadRequest(response);
