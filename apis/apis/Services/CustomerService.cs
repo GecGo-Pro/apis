@@ -23,7 +23,7 @@ namespace apis.Services
 
         public async Task<Customer> CheckExist(string phone)
         {
-            var existingCustomer = await _db.customers.Where(c => c.phone_number == phone).FirstOrDefaultAsync();
+            var existingCustomer = await _db.customers.FirstOrDefaultAsync(x=>x.phone_number==phone);
             if (existingCustomer != null)
             {
                     return existingCustomer;
