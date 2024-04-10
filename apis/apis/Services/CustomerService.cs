@@ -21,14 +21,14 @@ namespace apis.Services
             _authRepo = authRepo;
         }
 
-        public async Task<Customer?> CheckExist(string phone)
+        public async Task<Customer> CheckExist(string phone)
         {
             var existingCustomer = await _db.customers.Where(c => c.phone_number == phone).FirstOrDefaultAsync();
             if (existingCustomer != null)
             {
                     return existingCustomer;
             }
-            return null;
+            throw new MyException(404, "Phone Fail!!", "Phone Not Existing in Database.");
         }
 
 
@@ -36,9 +36,7 @@ namespace apis.Services
         {
             if (MyRegex.RegexPhone().IsMatch(phone))
             {
-                Customer? existingCustomer = await CheckExist(phone);
-                if (existingCustomer != null)
-                {
+                Customer existingCustomer = await CheckExist(phone);
                     if ( DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) < 0)
                     {
                         var random = new Random();
@@ -59,7 +57,7 @@ namespace apis.Services
                             {
                                 _db.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
                                 _db.Dispose();
-                                throw new MyException(500, "Send OTP Fail!!");
+                                throw new MyException(500, "Send OTP Fail!!", "Error from Server.");
                             }
                         }
                         else
@@ -68,11 +66,10 @@ namespace apis.Services
                             return "OTP:" +OTP;
                         }
                     }
-                    else{   throw new MyException(400, "The current OTP is still valid. Please try again later!!");}
-                }
-                else { throw new MyException(404, "Phone not Existing in Database!!"); }
+                    else{   throw new MyException(400, "OTP Fail!!","The current OTP is still valid. Please try again later.");}
+               
             }
-            else { throw new MyException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters!!"); }
+            else { throw new MyException(400,"Phone Fail!!", "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
           
         }
 
@@ -80,22 +77,18 @@ namespace apis.Services
         {
             if (MyRegex.RegexPhone().IsMatch(phone) && MyRegex.RegexOTP().IsMatch(OTP))
             {
-                Customer? existingCustomer = await CheckExist(phone);
-                if (existingCustomer != null)
-                {
+                Customer existingCustomer = await CheckExist(phone);
                     if (DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) > 0)
                     {
                         if (existingCustomer.otp == int.Parse(OTP))
                         {
                             return _authRepo.TokenCustomer(existingCustomer);
                         }
-                        else { throw new MyException(401, "The OTP you entered is incorrect!!"); }
+                        else { throw new MyException(401,"OTP Fail!!","The OTP you entered is incorrect."); }
                     }
-                    else { throw new MyException(403, "OTP Expired, Please choose to resend OTP!!"); }
-                }
-                else { throw new MyException(404, "Phone Not Existing in Database!!"); }
+                    else { throw new MyException(403, "OTP Fail!!", "OTP Expired, Please choose to resend OTP."); }
             }
-            else {throw new MyException(400, "Phone invalid or OTP invalid!!"); }
+            else {throw new MyException(400,"Phone or OTP Fail!!", "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long"); }
         }
 
         

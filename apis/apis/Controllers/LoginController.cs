@@ -6,11 +6,11 @@ namespace apis.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class loginController : ControllerBase
     {
         private readonly ICustomerRepo _cusRepo;
 
-        public LoginController(ICustomerRepo cusRepo)
+        public loginController(ICustomerRepo cusRepo)
         {
             _cusRepo = cusRepo;;
         }
@@ -25,12 +25,12 @@ namespace apis.Controllers
             }
             catch (MyException ex)
             {
-                var response = new ResponseData<string>(ex.StatusCode, ex.Message, null);
+                var response = new ResponseError<string>(ex.StatusCode, ex.Message, ex.Detail);
                 return BadRequest(response);
             }
             catch (Exception)
             {
-                var response = new ResponseData<string>(500, "Fail", null);
+                var response = new ResponseError<string>(500, "Fail", null);
                 return BadRequest(response);
             }
         }
@@ -45,12 +45,12 @@ namespace apis.Controllers
             }
             catch (MyException ex)
             {
-                var response = new ResponseData<string>(ex.StatusCode, ex.Message, null);
+                var response = new ResponseError<string>(ex.StatusCode, ex.Message, ex.Detail);
                 return BadRequest(response);
             }
             catch (Exception)
             {
-                var response = new ResponseData<string>(500, "Fail", null);
+                var response = new ResponseError<string>(500, "Fail", null);
                 return BadRequest(response);
             }
         }
