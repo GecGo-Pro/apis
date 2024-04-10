@@ -1,59 +1,103 @@
 ﻿using apis.IRepository;
 using apis.Models;
+using apis.Utils;
 using Microsoft.EntityFrameworkCore;
+using Twilio.Clients;
+
 namespace apis.Services
 {
-    public class CustomerService: ICustomerRepo
+    public partial class CustomerService : ICustomerRepo
     {
-        private readonly DatabaseContext db;
+        private readonly DatabaseContext _db;
+        private readonly IConfiguration _configuration;
+        private readonly ITwilioRestClient _client;
+        private readonly IAuthRepo _authRepo;
 
-        public CustomerService(DatabaseContext db)
+        public CustomerService(DatabaseContext db, IConfiguration configuration, ITwilioRestClient client, IAuthRepo authRepo)
         {
-            this.db = db;
+            _db = db;
+            _configuration = configuration;
+            _client = client;
+            _authRepo = authRepo;
         }
 
-        public async Task<bool> CheckExist(string phone)
+        public async Task<Customer?> CheckExist(string phone)
         {
-            var existing_customer = await db.customers.Where(c => c.phone_number == phone).FirstOrDefaultAsync();
-            if (existing_customer != null)
+            var existingCustomer = await _db.customers.Where(c => c.phone_number == phone).FirstOrDefaultAsync();
+            if (existingCustomer != null)
             {
-                    return true;
-            }
-            return false;
-        }
-
-
-        public async Task<string> CreateOTP(string phone)
-        {
-            var existing_customer = await db.customers.Where(c=>c.phone_number == phone).FirstOrDefaultAsync();
-            if (existing_customer!=null && DateTime.Compare(existing_customer.otp_life, DateTime.UtcNow) < 0)
-            {
-                const string chars = "0123456789";
-                var random = new Random();
-                string OTP= new string(Enumerable.Repeat(chars, 6) .Select(s => s[random.Next(s.Length)]).ToArray());
-
-                existing_customer.otp = int.Parse(OTP);
-                existing_customer.otp_life = DateTime.UtcNow.AddMinutes(2);
-                int Result = await db.SaveChangesAsync();
-                if (Result > 0)
-                {
-                    return OTP;
-                }
+                    return existingCustomer;
             }
             return null;
         }
 
-        public async Task<Customer> CheckOTP(string phone, string otp)
+
+        public async Task<string?> CreateOTP(string phone)
         {
-            var existing_customer = await db.customers.Where(c => c.phone_number == phone).FirstOrDefaultAsync();
-            if (existing_customer != null)
+            if (MyRegex.RegexPhone().IsMatch(phone))
             {
-                if(existing_customer.otp == int.Parse( otp))
+                Customer? existingCustomer = await CheckExist(phone);
+                if (existingCustomer != null)
                 {
-                    return existing_customer;
+                    if ( DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) < 0)
+                    {
+                        var random = new Random();
+                        string OTP = new(Enumerable.Repeat("0123456789", 6).Select(s => s[random.Next(s.Length)]).ToArray());
+                        existingCustomer.otp = int.Parse(OTP);
+                        existingCustomer.otp_life = DateTime.UtcNow.AddMinutes(2);
+                        await _db.SaveChangesAsync();
+                        if (_configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
+                        {
+                            //environment Pro
+                            SendSms s = new();
+                            try
+                            {
+                                s.Send(phone, OTP, _client);
+                                return null;
+                            }
+                            catch(Exception)
+                            {
+                                _db.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+                                _db.Dispose();
+                                throw new MyException(500, "Send OTP Fail!!");
+                            }
+                        }
+                        else
+                        {
+                            //environment Dev
+                            return "OTP:" +OTP;
+                        }
+                    }
+                    else{   throw new MyException(400, "The current OTP is still valid. Please try again later!!");}
                 }
+                else { throw new MyException(404, "Phone not Existing in Database!!"); }
             }
-            return null;
+            else { throw new MyException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters!!"); }
+          
         }
+
+        public async Task<string> VeryfyOTP(string phone, string OTP)
+        {
+            if (MyRegex.RegexPhone().IsMatch(phone) && MyRegex.RegexOTP().IsMatch(OTP))
+            {
+                Customer? existingCustomer = await CheckExist(phone);
+                if (existingCustomer != null)
+                {
+                    if (DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) > 0)
+                    {
+                        if (existingCustomer.otp == int.Parse(OTP))
+                        {
+                            return _authRepo.TokenCustomer(existingCustomer);
+                        }
+                        else { throw new MyException(401, "The OTP you entered is incorrect!!"); }
+                    }
+                    else { throw new MyException(403, "OTP Expired, Please choose to resend OTP!!"); }
+                }
+                else { throw new MyException(404, "Phone Not Existing in Database!!"); }
+            }
+            else {throw new MyException(400, "Phone invalid or OTP invalid!!"); }
+        }
+
+        
     }
 }
