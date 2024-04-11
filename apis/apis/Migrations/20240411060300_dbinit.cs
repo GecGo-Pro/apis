@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class DBInit : Migration
+    public partial class dbinit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,7 @@ namespace apis.Migrations
                     latitude = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     otp = table.Column<int>(type: "int", nullable: true),
+                    otp_life = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -205,12 +206,10 @@ namespace apis.Migrations
                 table: "dispatch_jobs",
                 column: "driver_id");
 
-
-         
             migrationBuilder.InsertData(
-                table: "customers",
-                columns: new[] { "id", "avatar", "created_at", "latitude", "longitude", "name", "otp", "phone_number" },
-                values: new object[] { 1, "", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3571), "10.800102", "106.665794", "Nguyen Van A", 123456, "0123456789" });
+                 table: "customers",
+                 columns: new[] { "id", "avatar", "created_at", "latitude", "longitude", "name", "otp", "phone_number", "otp_life" },
+                 values: new object[] { 1, "", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3571), "10.800102", "106.665794", "Nguyen Van A", 123456, "0123456789", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3571) });
 
             migrationBuilder.InsertData(
                 table: "dispatchers",
@@ -221,7 +220,7 @@ namespace apis.Migrations
                 table: "drivers",
                 columns: new[] { "id", "address", "avatar", "created_at", "current_address", "is_active", "latitude", "longitude", "name", "password", "phone_number", "status" },
                 values: new object[] { 1, "HCM", null, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3981), null, 1, "10.800450", "106.666357", "Nguyen Van C", "abcd", "1234234523", 0 });
-           
+
             migrationBuilder.InsertData(
              table: "cars",
              columns: new[] { "id", "color", "created_at", "driver_id", "note", "number_plate", "type" },
