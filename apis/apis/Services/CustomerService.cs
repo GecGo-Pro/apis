@@ -2,6 +2,7 @@
 using apis.Models;
 using apis.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Twilio.Clients;
 
 namespace apis.Services
@@ -28,7 +29,7 @@ namespace apis.Services
             {
                     return existingCustomer;
             }
-            throw new MyException(404, "Phone Fail!!", "Phone Not Existing in Database.");
+            throw new MyException(404, "Phone Fail!!", "Phone Not Existing in Database. Please register for an account using your phone number ");
         }
 
 
@@ -41,36 +42,38 @@ namespace apis.Services
                     {
                         var random = new Random();
                         string OTP = new(Enumerable.Repeat("0123456789", 6).Select(s => s[random.Next(s.Length)]).ToArray());
-                        existingCustomer.otp = int.Parse(OTP);
-                        existingCustomer.otp_life = DateTime.UtcNow.AddMinutes(2);
-                        await _db.SaveChangesAsync();
-                        if (_configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
+                        using (IDbContextTransaction transaction = _db.Database.BeginTransaction())
                         {
-                            //environment Pro
-                            SendSms s = new();
-                            try
+                            existingCustomer.otp = int.Parse(OTP);
+                            existingCustomer.otp_life = DateTime.UtcNow.AddMinutes(2);
+                            await _db.SaveChangesAsync();
+                            if (_configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
                             {
-                                s.Send(phone, OTP, _client);
-                                return null;
+                                //environment Pro
+                                SendSms s = new();
+                                try
+                                {
+                                    s.Send(phone, OTP, _client);
+                                    transaction.Commit();
+                                    return null;
+                                }
+                                catch (Exception)
+                                {
+                                    transaction.Rollback();
+                                    throw new MyException(500, "Send OTP Fail!!", "Error from Server (The error may be due to OTP not being sent).");
+                                }
                             }
-                            catch(Exception)
+                            else
                             {
-                                _db.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
-                                _db.Dispose();
-                                throw new MyException(500, "Send OTP Fail!!", "Error from Server.");
+                                //environment Dev
+                                return "OTP:" + OTP;
                             }
                         }
-                        else
-                        {
-                            //environment Dev
-                            return "OTP:" +OTP;
-                        }
+                     
                     }
-                    else{   throw new MyException(400, "OTP Fail!!","The current OTP is still valid. Please try again later.");}
-               
+                    else{   throw new MyException(400, "OTP Fail!!", "The current OTP is still valid. Please Retry after 2 minutes.");} 
             }
             else { throw new MyException(400,"Phone Fail!!", "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
-          
         }
 
         public async Task<string> VeryfyOTP(string phone, string OTP)

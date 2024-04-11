@@ -20,7 +20,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successfully",  await _cusRepo.CreateOTP(phone) );
+                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!",  await _cusRepo.CreateOTP(phone) );
                 return Ok(response);
             }
             catch (MyException ex)
@@ -30,7 +30,7 @@ namespace apis.Controllers
             }
             catch (Exception)
             {
-                var response = new ResponseError<string>(500, "Fail", null);
+                var response = new ResponseError<string>(500, "Server error!!", "");
                 return BadRequest(response);
             }
         }
@@ -40,7 +40,7 @@ namespace apis.Controllers
             try
             {
                 string token = await _cusRepo.VeryfyOTP(phone, otp);
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Login Successfull", token);
+                var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!",token);
                 return Ok(response);
             }
             catch (MyException ex)
@@ -50,7 +50,7 @@ namespace apis.Controllers
             }
             catch (Exception)
             {
-                var response = new ResponseError<string>(500, "Fail", null);
+                var response = new ResponseError<string>(500, "Server error!!", "");
                 return BadRequest(response);
             }
         }
