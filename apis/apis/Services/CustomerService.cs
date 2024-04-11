@@ -29,7 +29,7 @@ namespace apis.Services
             {
                     return existingCustomer;
             }
-            throw new MyException(404, "Phone Fail!!", "Phone Not Existing in Database. Please register for an account using your phone number ");
+            throw new HtttpException(404, "Phone Fail!!", "Phone Not Existing in Database. Please register for an account using your phone number ");
         }
 
 
@@ -60,7 +60,7 @@ namespace apis.Services
                                 catch (Exception)
                                 {
                                     transaction.Rollback();
-                                    throw new MyException(500, "Send OTP Fail!!", "Error from Server (The error may be due to OTP not being sent).");
+                                    throw new Exception(500, "Send OTP Fail!!", "Error from Server (The error may be due to OTP not being sent).");
                                 }
                             }
                             else
@@ -71,9 +71,9 @@ namespace apis.Services
                         }
                      
                     }
-                    else{   throw new MyException(400, "OTP Fail!!", "The current OTP is still valid. Please Retry after 2 minutes.");} 
+                    else{   throw new HtttpException(400, "OTP Fail!!", "The current OTP is still valid. Please Retry after 2 minutes.");} 
             }
-            else { throw new MyException(400,"Phone Fail!!", "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
+            else { throw new HtttpException(400,"Phone Fail!!", "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
         }
 
         public async Task<string> VeryfyOTP(string phone, string OTP)
@@ -87,11 +87,11 @@ namespace apis.Services
                         {
                             return _authRepo.TokenCustomer(existingCustomer);
                         }
-                        else { throw new MyException(401,"OTP Fail!!","The OTP you entered is incorrect."); }
+                        else { throw new HtttpException(401,"OTP Fail!!","The OTP you entered is incorrect."); }
                     }
-                    else { throw new MyException(403, "OTP Fail!!", "OTP Expired, Please choose to resend OTP."); }
+                    else { throw new HtttpException(403, "OTP Fail!!", "OTP Expired, Please choose to resend OTP."); }
             }
-            else {throw new MyException(400,"Phone or OTP Fail!!", "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long"); }
+            else {throw new HtttpException(400,"Phone or OTP Fail!!", "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long"); }
         }
 
         

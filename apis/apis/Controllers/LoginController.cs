@@ -23,7 +23,7 @@ namespace apis.Controllers
                 var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!",  await _cusRepo.CreateOTP(phone) );
                 return Ok(response);
             }
-            catch (MyException ex)
+            catch (HtttpException ex)
             {
                 var response = new ResponseError<string>(ex.StatusCode, ex.Message, ex.Detail);
                 return BadRequest(response);
@@ -43,7 +43,7 @@ namespace apis.Controllers
                 var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!",token);
                 return Ok(response);
             }
-            catch (MyException ex)
+            catch (HtttpException ex)
             {
                 var response = new ResponseError<string>(ex.StatusCode, ex.Message, ex.Detail);
                 return BadRequest(response);

@@ -1,11 +1,11 @@
 ﻿namespace apis.Models
 {
-    public class MyException : Exception
+    public class HtttpException : Exception
     {
         public int StatusCode { get; set; }
         public string Detail { get; set; }
 
-        public MyException(int statusCode, string message, string detail) : base(message)
+        public HtttpException(int statusCode, string message, string detail) : base(message)
         {
             StatusCode = statusCode;
             Detail= detail;
