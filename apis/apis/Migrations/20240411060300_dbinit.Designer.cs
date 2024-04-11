@@ -11,8 +11,8 @@ using apis.Models;
 namespace apis.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240405044907_DBInit")]
-    partial class DBInit
+    [Migration("20240411060300_dbinit")]
+    partial class dbinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,9 @@ namespace apis.Migrations
 
                     b.Property<int?>("otp")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("otp_life")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("phone_number")
                         .IsRequired()

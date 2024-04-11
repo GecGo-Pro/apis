@@ -82,6 +82,9 @@ namespace apis.Migrations
                     b.Property<int?>("otp")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("otp_life")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("phone_number")
                         .IsRequired()
                         .HasColumnType("longtext");
