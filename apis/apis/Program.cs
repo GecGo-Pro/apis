@@ -2,6 +2,7 @@ using apis.Controllers;
 using apis.IRepository;
 using apis.Models;
 using apis.Services;
+using apis.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -52,9 +53,12 @@ builder.Services.AddCors(o =>
     });
 });
 
+builder.Services.AddTransient<ResultResponse>();
+
 
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
 builder.Services.AddScoped<IAuthRepo, AuthService>();
+builder.Services.AddScoped<IDispatcherRepo, DispatcherService>();
 
 
 builder.Services.AddControllers().AddJsonOptions(x =>

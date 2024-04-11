@@ -29,7 +29,7 @@ namespace apis.Services
             {
                     return existingCustomer;
             }
-            throw new HtttpException(404, "Phone Fail!!", "Phone Not Existing in Database. Please register for an account using your phone number ");
+            throw new HttpException(404, "Phone Not Existing in Database. Please register for an account using your phone number ");
         }
 
 
@@ -57,10 +57,10 @@ namespace apis.Services
                                     transaction.Commit();
                                     return null;
                                 }
-                                catch (Exception)
+                                catch
                                 {
                                     transaction.Rollback();
-                                    throw new HtttpException(500, "Send OTP Fail!!", "Error from Server (The error may be due to OTP not being sent).");
+                                    throw new HttpException(500,  "Error from Server (The error may be due to OTP not being sent).");
                                 }
                             }
                             else
@@ -72,9 +72,9 @@ namespace apis.Services
                         }
                      
                     }
-                    else{   throw new HtttpException(400, "OTP Fail!!", "The current OTP is still valid. Please Retry after 2 minutes.");} 
+                    else{   throw new HttpException(400, "The current OTP is still valid. Please Retry after 2 minutes.");} 
             }
-            else { throw new HtttpException(400,"Phone Fail!!", "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
+            else { throw new HttpException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
         }
 
         public async Task<string> VeryfyOTP(string phone, string OTP)
@@ -86,15 +86,17 @@ namespace apis.Services
                     {
                         if (existingCustomer.otp == int.Parse(OTP))
                         {
-                            return _authRepo.TokenCustomer(existingCustomer);
+                            try
+                            {
+                                return _authRepo.TokenCustomer(existingCustomer);
+                            }
+                            catch { throw new HttpException(500, "Generate invalid Token."); }
                         }
-                        else { throw new HtttpException(401,"OTP Fail!!","The OTP you entered is incorrect."); }
+                        else { throw new HttpException(401,"The OTP you entered is incorrect."); }
                     }
-                    else { throw new HtttpException(403, "OTP Fail!!", "OTP Expired, Please choose to resend OTP."); }
+                    else { throw new HttpException(401, "OTP Expired, Please choose to resend OTP."); }
             }
-            else {throw new HtttpException(400,"Phone or OTP Fail!!", "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long"); }
+            else {throw new HttpException(400, "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long"); }
         }
-
-        
     }
 }

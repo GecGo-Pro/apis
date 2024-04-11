@@ -2,6 +2,7 @@
 using apis.Models;
 using apis.Utils;
 using Microsoft.AspNetCore.Mvc;
+
 namespace apis.Controllers
 {
     [Route("api/[controller]")]
@@ -9,10 +10,12 @@ namespace apis.Controllers
     public class loginController : ControllerBase
     {
         private readonly ICustomerRepo _cusRepo;
+        private readonly ResultResponse _resultResponse;
 
-        public loginController(ICustomerRepo cusRepo) 
+        public loginController(ICustomerRepo cusRepo, ResultResponse resultResponse)
         {
             _cusRepo = cusRepo;
+            _resultResponse = resultResponse;
         }
 
         [HttpPost]
@@ -23,15 +26,9 @@ namespace apis.Controllers
                 var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!",  await _cusRepo.CreateOTP(phone) );
                 return Ok(response);
             }
-            catch (HtttpException ex)
+            catch (HttpException ex)
             {
-                var response = new ResponseError<string>(ex.StatusCode, ex.Message, ex.Detail);
-                return BadRequest(response);
-            }
-            catch (Exception)
-            {
-                var response = new ResponseError<string>(500, "Server error!!", "");
-                return BadRequest(response);
+                return _resultResponse.GetActionResult(ex);
             }
         }
         [HttpPost("/verify_otp")]
@@ -43,15 +40,9 @@ namespace apis.Controllers
                 var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!",token);
                 return Ok(response);
             }
-            catch (HtttpException ex)
+            catch (HttpException ex)
             {
-                var response = new ResponseError<string>(ex.StatusCode, ex.Message, ex.Detail);
-                return BadRequest(response);
-            }
-            catch (Exception)
-            {
-                var response = new ResponseError<string>(500, "Server error!!", "");
-                return BadRequest(response);
+                return _resultResponse.GetActionResult(ex);
             }
         }
     }

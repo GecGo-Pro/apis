@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class dbinit : Migration
+    public partial class Dbinit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

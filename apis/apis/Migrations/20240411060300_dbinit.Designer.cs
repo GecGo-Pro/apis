@@ -12,7 +12,7 @@ namespace apis.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20240411060300_dbinit")]
-    partial class dbinit
+    partial class Dbinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
