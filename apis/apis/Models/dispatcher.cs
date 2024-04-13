@@ -11,12 +11,12 @@ namespace apis.Models
         public required string name { get; set; }
         public string? avatar { get; set; }
         public int? otp { get; set; }
-        [AllowNull]
+        public int? deleted { get; set; } = 0;
         public DateTime created_at { get; set; }= DateTime.UtcNow;
 
         [NotMapped]
         public IFormFile? upload_image { get; set; }
-        [AllowNull]
+
         public ICollection<DispatchJob>? dispatch_jobs { get; set; }
     }
 }

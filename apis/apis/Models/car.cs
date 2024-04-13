@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 
 namespace apis.Models
 {
@@ -10,7 +11,9 @@ namespace apis.Models
         public required string type{ get; set; }
         public string? note{ get; set; }
         public string? color{ get; set; }
+        public int? deleted { get; set; } = 0;
 
+        [ForeignKey("driver")]
         public required int driver_id{ get; set; }
 
         public ICollection<DispatchJob>? dispatch_jobs { get; set; }

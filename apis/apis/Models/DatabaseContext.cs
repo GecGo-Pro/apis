@@ -22,11 +22,12 @@ namespace apis.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-/*            modelBuilder.Entity<Customer>().HasData(CustomerSeedData.CustomerData());
+            modelBuilder.Entity<Customer>().HasData(CustomerSeedData.CustomerData());
             modelBuilder.Entity<Dispatcher>().HasData(DispatcherSeedData.DispatcherData());
             modelBuilder.Entity<Driver>().HasData(DriverSeedData.DriverData());
             modelBuilder.Entity<Car>().HasData(CarSeedData.CarData());
-            modelBuilder.Entity<DispatchJob>().HasData(DispatchJobSeedData.DispatcherData());*/
+            modelBuilder.Entity<DispatchJob>().HasData(DispatchJobSeedData.DispatcherData());
+            
         }
     }
 }

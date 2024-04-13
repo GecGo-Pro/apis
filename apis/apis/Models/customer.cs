@@ -11,6 +11,7 @@ namespace apis.Models
         public required string longitude { get; set; }
         public required string latitude { get; set; }
         public int? otp { get; set; }
+        public int? deleted { get; set; } = 0;
         public DateTime otp_life { get; set; }
         public DateTime created_at { get; set; } = DateTime.UtcNow;
 

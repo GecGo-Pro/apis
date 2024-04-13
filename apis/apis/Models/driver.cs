@@ -18,6 +18,7 @@ namespace apis.Models
         public required string latitude { get; set; }
         public int is_active { get; set; }
         public int status { get; set; }
+        public int? deleted { get; set; } = 0;
 
         public DateTime created_at { get; set; } = DateTime.UtcNow;
 

@@ -9,5 +9,11 @@ namespace apis.Utils
 
         [GeneratedRegex("^\\d{6}$")]
         public static partial Regex RegexOTP();
+
+        [GeneratedRegex(@"^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}$")]
+        public static partial Regex RegexEmail();
+
+
+
     }
 }

@@ -18,13 +18,16 @@ namespace apis.Models
         public string? note { get; set; }
         public string? cancell_reason { get; set; }
 
+        [ForeignKey("customer")]
         public int customer_id { get; set; }
-        public int dispatcher_id { get; set; }
+        [ForeignKey("dispatcher")]
+        public int dispatcher_id { get; set;}
+        [ForeignKey("driver")]
         public int? driver_id { get; set; }
+        [ForeignKey("car")]
         public int? car_id { get; set; }
 
         public DateTime created_at { get; set; } = DateTime.UtcNow;
-
 
         public Customer? customer { get; set; }
         public Dispatcher? dispatcher { get; set; }

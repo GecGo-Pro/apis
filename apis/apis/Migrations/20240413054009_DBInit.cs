@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class Dbinit : Migration
+    public partial class DBInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,7 @@ namespace apis.Migrations
                     latitude = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     otp = table.Column<int>(type: "int", nullable: true),
+                    deleted = table.Column<int>(type: "int", nullable: true),
                     otp_life = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -56,6 +57,7 @@ namespace apis.Migrations
                     avatar = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     otp = table.Column<int>(type: "int", nullable: true),
+                    deleted = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -88,6 +90,7 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     is_active = table.Column<int>(type: "int", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
+                    deleted = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -110,6 +113,7 @@ namespace apis.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     color = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    deleted = table.Column<int>(type: "int", nullable: true),
                     driver_id = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -117,10 +121,11 @@ namespace apis.Migrations
                 {
                     table.PrimaryKey("PK_cars", x => x.id);
                     table.ForeignKey(
-                        name: "FK_cars_drivers_driverid",
+                        name: "FK_cars_drivers_driver_id",
                         column: x => x.driver_id,
                         principalTable: "drivers",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -159,78 +164,79 @@ namespace apis.Migrations
                 {
                     table.PrimaryKey("PK_dispatch_jobs", x => x.id);
                     table.ForeignKey(
-                        name: "FK_dispatch_jobs_cars_carid",
+                        name: "FK_dispatch_jobs_cars_car_id",
                         column: x => x.car_id,
                         principalTable: "cars",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_dispatch_jobs_customers_customerid",
+                        name: "FK_dispatch_jobs_customers_customer_id",
                         column: x => x.customer_id,
                         principalTable: "customers",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_dispatch_jobs_dispatchers_dispatcherid",
+                        name: "FK_dispatch_jobs_dispatchers_dispatcher_id",
                         column: x => x.dispatcher_id,
                         principalTable: "dispatchers",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_dispatch_jobs_drivers_driverid",
+                        name: "FK_dispatch_jobs_drivers_driver_id",
                         column: x => x.driver_id,
                         principalTable: "drivers",
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_cars_driverid",
-                table: "cars",
-                column: "driver_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_dispatch_jobs_carid",
-                table: "dispatch_jobs",
-                column: "car_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_dispatch_jobs_customerid",
-                table: "dispatch_jobs",
-                column: "customer_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_dispatch_jobs_dispatcherid",
-                table: "dispatch_jobs",
-                column: "dispatcher_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_dispatch_jobs_driverid",
-                table: "dispatch_jobs",
-                column: "driver_id");
-
             migrationBuilder.InsertData(
-                 table: "customers",
-                 columns: new[] { "id", "avatar", "created_at", "latitude", "longitude", "name", "otp", "phone_number", "otp_life" },
-                 values: new object[] { 1, "", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3571), "10.800102", "106.665794", "Nguyen Van A", 123456, "0123456789", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3571) });
+                table: "customers",
+                columns: new[] { "id", "avatar", "created_at", "deleted", "latitude", "longitude", "name", "otp", "otp_life", "phone_number" },
+                values: new object[] { 1, "", new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(7479), 0, "10.800102", "106.665794", "Nguyen Van A", 123456, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0123456789" });
 
             migrationBuilder.InsertData(
                 table: "dispatchers",
-                columns: new[] { "id", "avatar", "created_at", "email", "name", "otp", "phone_number" },
-                values: new object[] { 1, "", new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3940), "", "Nguyen Van B", 654321, "01212345678" });
+                columns: new[] { "id", "avatar", "created_at", "deleted", "email", "name", "otp", "phone_number" },
+                values: new object[] { 1, "", new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8035), 0, "", "Nguyen Van B", 654321, "01212345678" });
 
             migrationBuilder.InsertData(
                 table: "drivers",
-                columns: new[] { "id", "address", "avatar", "created_at", "current_address", "is_active", "latitude", "longitude", "name", "password", "phone_number", "status" },
-                values: new object[] { 1, "HCM", null, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(3981), null, 1, "10.800450", "106.666357", "Nguyen Van C", "abcd", "1234234523", 0 });
+                columns: new[] { "id", "address", "avatar", "created_at", "current_address", "deleted", "is_active", "latitude", "longitude", "name", "password", "phone_number", "status" },
+                values: new object[] { 1, "HCM", null, new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8097), null, 0, 1, "10.800450", "106.666357", "Nguyen Van C", "abcd", "1234234523", 0 });
 
             migrationBuilder.InsertData(
-             table: "cars",
-             columns: new[] { "id", "color", "created_at", "driver_id", "note", "number_plate", "type" },
-             values: new object[] { 1, null, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(4018), 1, "", "49A 222222", "6 cho" });
+                table: "cars",
+                columns: new[] { "id", "color", "created_at", "deleted", "driver_id", "note", "number_plate", "type" },
+                values: new object[] { 1, null, new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8159), 0, 1, "", "49A 222222", "6 cho" });
 
             migrationBuilder.InsertData(
                 table: "dispatch_jobs",
                 columns: new[] { "id", "cancell_reason", "car_id", "created_at", "customer_id", "dispatcher_id", "driver_id", "end_address", "end_date", "end_latitude", "end_longitude", "note", "start_address", "start_date", "start_latitude", "start_longitude", "status" },
-                values: new object[] { 1, null, 1, new DateTime(2024, 4, 5, 4, 36, 56, 794, DateTimeKind.Utc).AddTicks(4053), 1, 1, 1, "", null, "10.801418", "106.661530", null, "", null, "10.800102", "106.665794", 1 });
+                values: new object[] { 1, null, 1, new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8216), 1, 1, 1, "", null, "10.801418", "106.661530", null, "", null, "10.800102", "106.665794", 1 });
 
+            migrationBuilder.CreateIndex(
+                name: "IX_cars_driver_id",
+                table: "cars",
+                column: "driver_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dispatch_jobs_car_id",
+                table: "dispatch_jobs",
+                column: "car_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dispatch_jobs_customer_id",
+                table: "dispatch_jobs",
+                column: "customer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dispatch_jobs_dispatcher_id",
+                table: "dispatch_jobs",
+                column: "dispatcher_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dispatch_jobs_driver_id",
+                table: "dispatch_jobs",
+                column: "driver_id");
         }
 
         /// <inheritdoc />

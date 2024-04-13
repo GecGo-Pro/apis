@@ -31,10 +31,10 @@ namespace apis.Migrations
                     b.Property<DateTime>("created_at")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("driver_id")
+                    b.Property<int?>("deleted")
                         .HasColumnType("int");
 
-                    b.Property<int?>("driverid")
+                    b.Property<int>("driver_id")
                         .HasColumnType("int");
 
                     b.Property<string>("note")
@@ -50,9 +50,21 @@ namespace apis.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("driverid");
+                    b.HasIndex("driver_id");
 
                     b.ToTable("cars");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8159),
+                            deleted = 0,
+                            driver_id = 1,
+                            note = "",
+                            number_plate = "49A 222222",
+                            type = "6 cho"
+                        });
                 });
 
             modelBuilder.Entity("apis.Models.Customer", b =>
@@ -66,6 +78,9 @@ namespace apis.Migrations
 
                     b.Property<DateTime>("created_at")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("deleted")
+                        .HasColumnType("int");
 
                     b.Property<string>("latitude")
                         .IsRequired()
@@ -92,6 +107,21 @@ namespace apis.Migrations
                     b.HasKey("id");
 
                     b.ToTable("customers");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            avatar = "",
+                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(7479),
+                            deleted = 0,
+                            latitude = "10.800102",
+                            longitude = "106.665794",
+                            name = "Nguyen Van A",
+                            otp = 123456,
+                            otp_life = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            phone_number = "0123456789"
+                        });
                 });
 
             modelBuilder.Entity("apis.Models.DispatchJob", b =>
@@ -106,28 +136,16 @@ namespace apis.Migrations
                     b.Property<int?>("car_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("carid")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("created_at")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("customer_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("customerid")
-                        .HasColumnType("int");
-
                     b.Property<int>("dispatcher_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("dispatcherid")
-                        .HasColumnType("int");
-
                     b.Property<int?>("driver_id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("driverid")
                         .HasColumnType("int");
 
                     b.Property<string>("end_address")
@@ -168,15 +186,33 @@ namespace apis.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("carid");
+                    b.HasIndex("car_id");
 
-                    b.HasIndex("customerid");
+                    b.HasIndex("customer_id");
 
-                    b.HasIndex("dispatcherid");
+                    b.HasIndex("dispatcher_id");
 
-                    b.HasIndex("driverid");
+                    b.HasIndex("driver_id");
 
                     b.ToTable("dispatch_jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            car_id = 1,
+                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8216),
+                            customer_id = 1,
+                            dispatcher_id = 1,
+                            driver_id = 1,
+                            end_address = "",
+                            end_latitude = "10.801418",
+                            end_longitude = "106.661530",
+                            start_address = "",
+                            start_latitude = "10.800102",
+                            start_longitude = "106.665794",
+                            status = 1
+                        });
                 });
 
             modelBuilder.Entity("apis.Models.Dispatcher", b =>
@@ -190,6 +226,9 @@ namespace apis.Migrations
 
                     b.Property<DateTime>("created_at")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("deleted")
+                        .HasColumnType("int");
 
                     b.Property<string>("email")
                         .HasColumnType("longtext");
@@ -208,6 +247,19 @@ namespace apis.Migrations
                     b.HasKey("id");
 
                     b.ToTable("dispatchers");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            avatar = "",
+                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8035),
+                            deleted = 0,
+                            email = "",
+                            name = "Nguyen Van B",
+                            otp = 654321,
+                            phone_number = "01212345678"
+                        });
                 });
 
             modelBuilder.Entity("apis.Models.Driver", b =>
@@ -227,6 +279,9 @@ namespace apis.Migrations
 
                     b.Property<string>("current_address")
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("deleted")
+                        .HasColumnType("int");
 
                     b.Property<int>("is_active")
                         .HasColumnType("int");
@@ -257,13 +312,31 @@ namespace apis.Migrations
                     b.HasKey("id");
 
                     b.ToTable("drivers");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            address = "HCM",
+                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8097),
+                            deleted = 0,
+                            is_active = 1,
+                            latitude = "10.800450",
+                            longitude = "106.666357",
+                            name = "Nguyen Van C",
+                            password = "abcd",
+                            phone_number = "1234234523",
+                            status = 0
+                        });
                 });
 
             modelBuilder.Entity("apis.Models.Car", b =>
                 {
                     b.HasOne("apis.Models.Driver", "driver")
                         .WithMany("cars")
-                        .HasForeignKey("driverid");
+                        .HasForeignKey("driver_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("driver");
                 });
@@ -272,19 +345,23 @@ namespace apis.Migrations
                 {
                     b.HasOne("apis.Models.Car", "car")
                         .WithMany("dispatch_jobs")
-                        .HasForeignKey("carid");
+                        .HasForeignKey("car_id");
 
                     b.HasOne("apis.Models.Customer", "customer")
                         .WithMany("dispatch_Jobs")
-                        .HasForeignKey("customerid");
+                        .HasForeignKey("customer_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("apis.Models.Dispatcher", "dispatcher")
                         .WithMany("dispatch_jobs")
-                        .HasForeignKey("dispatcherid");
+                        .HasForeignKey("dispatcher_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("apis.Models.Driver", "driver")
                         .WithMany("dispatch_jobs")
-                        .HasForeignKey("driverid");
+                        .HasForeignKey("driver_id");
 
                     b.Navigation("car");
 

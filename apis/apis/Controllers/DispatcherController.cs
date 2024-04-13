@@ -48,7 +48,7 @@ namespace apis.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Dispatcher dispatcher)
+        public async Task<ActionResult> Post([FromForm] Dispatcher dispatcher)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace apis.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, Dispatcher dispatcher)
+        public async Task<ActionResult> Put(int id,[FromBody] Dispatcher dispatcher)
         {
             try
             {
