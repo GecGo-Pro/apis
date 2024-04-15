@@ -24,10 +24,10 @@ namespace apis.Services
 
         public async Task<Customer> CheckExist(string phone)
         {
-            var existingCustomer = await _db.customers.FirstOrDefaultAsync(x=>x.phone_number==phone);
+            var existingCustomer = await _db.customers.FirstOrDefaultAsync(x => x.phone_number == phone);
             if (existingCustomer != null)
             {
-                    return existingCustomer;
+                return existingCustomer;
             }
             throw new HttpException(404, "Phone Not Existing in Database. Please register for an account using your phone number ");
         }
@@ -35,68 +35,71 @@ namespace apis.Services
 
         public async Task<string?> CreateOTP(string phone)
         {
-            if (MyRegex.RegexPhone().IsMatch(phone))
+            bool checkPhone = !MyRegex.RegexPhone().IsMatch(phone);
+            if (checkPhone)
             {
-                Customer existingCustomer = await CheckExist(phone);
-                    if ( DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) < 0)
-                    {
-                        var random = new Random();
-                        string OTP = new(Enumerable.Repeat("0123456789", 6).Select(s => s[random.Next(s.Length)]).ToArray());
-                        using (IDbContextTransaction transaction = _db.Database.BeginTransaction())
-                        {
-                            existingCustomer.otp = int.Parse(OTP);
-                            existingCustomer.otp_life = DateTime.UtcNow.AddMinutes(2);
-                            await _db.SaveChangesAsync();
-                            if (_configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
-                            {
-                                //environment Pro
-                                SendSms s = new();
-                                try
-                                {
-                                    s.Send(phone, OTP, _client);
-                                    transaction.Commit();
-                                    return null;
-                                }
-                                catch
-                                {
-                                    transaction.Rollback();
-                                    throw new HttpException(500,  "Error from Server (The error may be due to OTP not being sent).");
-                                }
-                            }
-                            else
-                            {
-                            //environment Dev
-                            transaction.Commit();
-                            return "OTP:" + OTP;
-                            }
-                        }
-                     
-                    }
-                    else{   throw new HttpException(400, "The current OTP is still valid. Please Retry after 2 minutes.");} 
+                throw new HttpException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters.");
             }
-            else { throw new HttpException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters."); }
+            Customer existingCustomer = await CheckExist(phone);
+            bool checkOTPExpired = DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) > 0;
+            if (checkOTPExpired)
+            {
+                throw new HttpException(400, "The current OTP is still valid. Please Retry after 2 minutes.");
+            }
+            var random = new Random();
+            string OTP = new(Enumerable.Repeat("0123456789", 6).Select(s => s[random.Next(s.Length)]).ToArray());
+            using (IDbContextTransaction transaction = _db.Database.BeginTransaction())
+            {
+                existingCustomer.otp = int.Parse(OTP);
+                if (_configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
+                {
+
+                    existingCustomer.otp_life = DateTime.UtcNow.AddMinutes(1);
+                    await _db.SaveChangesAsync();
+                    //environment Pro
+                    SendSms s = new();
+                    try
+                    {
+                        s.Send(phone, OTP, _client);
+                        transaction.Commit();
+                        return null;
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw new HttpException(500, "Error from Server (The error may be due to OTP not being sent).");
+                    }
+                }
+                //environment Dev
+                existingCustomer.otp_life = DateTime.UtcNow.AddSeconds(30);
+                await _db.SaveChangesAsync();
+                transaction.Commit();
+                return "OTP:" + OTP;
+            }
+
         }
 
         public async Task<string> VeryfyOTP(string phone, string OTP)
         {
-            if (MyRegex.RegexPhone().IsMatch(phone) && MyRegex.RegexOTP().IsMatch(OTP))
+            bool checkInputValid = !MyRegex.RegexPhone().IsMatch(phone) && MyRegex.RegexOTP().IsMatch(OTP);
+            if (checkInputValid)
             {
-                Customer existingCustomer = await CheckExist(phone);
-                    if (DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) > 0)
-                    {
-                        if (existingCustomer.otp == int.Parse(OTP))
-                        {
-                            try
-                            {
-                                return _authRepo.TokenCustomer(existingCustomer);
-                            }
-                            catch { throw new HttpException(500, "Generate invalid Token."); }
-                        }
-                        else { throw new HttpException(401,"The OTP you entered is incorrect."); }
-                    }
-                    else { throw new HttpException(401, "OTP Expired, Please choose to resend OTP."); }
+                throw new HttpException(400, "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long");
             }
-            else {throw new HttpException(400, "Invalid phone number or OTP. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. OTP must be numeric and 6 characters long"); }
+            Customer existingCustomer = await CheckExist(phone);
+            if (DateTime.Compare(existingCustomer.otp_life, DateTime.UtcNow) < 0)
+            {
+                throw new HttpException(401, "OTP Expired, Please choose to resend OTP.");
+            }
+            if (existingCustomer.otp != int.Parse(OTP))
+            {
+                throw new HttpException(401, "The OTP you entered is incorrect.");
+            }
+            try
+            {
+                return _authRepo.TokenCustomer(existingCustomer);
+            }
+            catch { throw new HttpException(500, "Generate invalid Token."); }
         }
     }
 }

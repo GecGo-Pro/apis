@@ -39,7 +39,7 @@ namespace apis.Services
                 if (dispatcher.upload_image != null)
                 {
                     UploadImage ul = new UploadImage(_env);
-                    string nameImage = await ul.Upload(dispatcher.upload_image);
+                    string nameImage = await ul.Upload(dispatcher.upload_image, "Customer");
                     dispatcher.avatar = nameImage;
                 }
                 await _db.dispatchers.AddAsync(dispatcher);
@@ -67,7 +67,7 @@ namespace apis.Services
 
         public async Task<IEnumerable<Dispatcher>> Get()
         {
-            var dispatchers = await _db.dispatchers.Where(d=>d.deleted ==0 ).ToListAsync();
+            var dispatchers = await _db.dispatchers.Where(d => d.deleted == 0).ToListAsync();
             if (dispatchers.Count() == 0)
             {
                 throw new HttpException(404, "Not found data available, please add data.");
@@ -78,7 +78,7 @@ namespace apis.Services
         public async Task<Dispatcher> Get(int id)
         {
             var dispatcher = await _db.dispatchers.FindAsync(id);
-            if (dispatcher == null|| dispatcher.deleted!=0)
+            if (dispatcher == null || dispatcher.deleted != 0)
             {
                 throw new HttpException(404, "No Data in Database.");
             }
@@ -97,9 +97,11 @@ namespace apis.Services
             {
                 throw new HttpException(400, "Invalid Email. Please try again. VD: xxx@xxx.xxx");
             }
-            bool checkNumberExist = await _db.dispatchers.SingleOrDefaultAsync(x => x.phone_number == dispatcher.phone_number) != null;
             Dispatcher dispatcherExisting = await Get(id);
-            if (checkNumberExist && dispatcherExisting.phone_number != dispatcher.phone_number)
+            bool checkNumberExist = await _db.dispatchers.SingleOrDefaultAsync(x => x.phone_number == dispatcher.phone_number) != null
+                                              && dispatcherExisting.phone_number != dispatcher.phone_number;
+
+            if (checkNumberExist)
             {
                 throw new HttpException(409, "Phone number already exists. Please try again with a different phone number.");
             }
@@ -107,11 +109,26 @@ namespace apis.Services
             {
                 dispatcherExisting.email = dispatcher.email != null ? dispatcher.email : dispatcherExisting.email;
                 dispatcherExisting.name = dispatcher.name;
+
+                if (dispatcher.upload_image != null && dispatcherExisting.avatar!=null)
+                {
+                    UploadImage ul = new UploadImage(_env);
+                    ul.Delete(dispatcherExisting.avatar, "Customer");
+                }
+
+                if(dispatcher.upload_image != null)
+                {
+                    UploadImage ul = new UploadImage(_env);
+                    string nameImage = await ul.Upload(dispatcher.upload_image, "Customer");
+                    dispatcherExisting.avatar = nameImage;
+                }
+
                 dispatcherExisting.avatar = dispatcher.avatar != null ? dispatcher.avatar : dispatcherExisting.avatar;
                 if (dispatcherExisting.phone_number != dispatcher.phone_number)
                 {
                     dispatcherExisting.phone_number = dispatcher.phone_number;
                 }
+
                 await _db.SaveChangesAsync();
                 return dispatcherExisting;
             }

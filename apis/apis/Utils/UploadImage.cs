@@ -1,4 +1,5 @@
 ﻿using apis.Models;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace apis.Utils
 {
@@ -12,30 +13,33 @@ namespace apis.Utils
         }
 
 
-
-        string pathToNewFolder = System.IO.Path.Combine("Image", "Customer");
-        public async Task<string>  Upload(IFormFile file)
+        public async Task<string> Upload(IFormFile file, string folder)
         {
 
-                var upload = Path.Combine(_env.ContentRootPath, pathToNewFolder);
-                try
+
+            string pathToNewFolder = System.IO.Path.Combine("Image", folder);
+            var upload = Path.Combine(_env.ContentRootPath, pathToNewFolder);
+            try
+            {
+                DirectoryInfo directory = Directory.CreateDirectory(pathToNewFolder);
+                var filePath = Path.Combine(Path.GetRandomFileName() + file.FileName);
+
+                using (var stream = new FileStream(Path.Combine(upload, filePath), FileMode.Create))
                 {
-                    DirectoryInfo directory = Directory.CreateDirectory(pathToNewFolder);
-                    var filePath = Path.Combine(Path.GetRandomFileName() + file.FileName);
-
-                    using (var stream = new FileStream(Path.Combine(upload, filePath), FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-
-                    return filePath;
+                    await file.CopyToAsync(stream);
                 }
-                catch { throw new HttpException(500, "Upload File Error. Please try again."); }
+
+                return filePath;
+            }
+            catch { throw new HttpException(500, "Upload File Error. Please try again."); }
 
         }
-        public void Delete(string nameFile)
+        public void Delete(string nameFile, string folder)
         {
-              var upload = Path.Combine(_env.ContentRootPath, pathToNewFolder);
+
+
+            string pathToNewFolder = System.IO.Path.Combine("Image", folder);
+            var upload = Path.Combine(_env.ContentRootPath, pathToNewFolder);
             if (!string.IsNullOrEmpty(nameFile))
             {
 

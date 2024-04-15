@@ -53,12 +53,13 @@ builder.Services.AddCors(o =>
     });
 });
 
-builder.Services.AddTransient<ResultResponse>();
+builder.Services.AddTransient<ResultError>();
 
 
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
 builder.Services.AddScoped<IAuthRepo, AuthService>();
 builder.Services.AddScoped<IDispatcherRepo, DispatcherService>();
+builder.Services.AddScoped<IDriverRepo, DriverService>();
 
 
 builder.Services.AddControllers().AddJsonOptions(x =>

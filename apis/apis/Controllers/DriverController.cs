@@ -1,30 +1,30 @@
 ﻿using apis.IRepository;
 using apis.Models;
 using apis.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace apis.Controllers
 {
-    [Route("api/v1/dispatchers")]
+    [Route("api/v1/drivers")]
     [ApiController]
-    public class DispatcherController : ControllerBase
+    public class DriverController : ControllerBase
     {
-        private readonly IDispatcherRepo _disRepo;
+        private readonly IDriverRepo _dirRepo;
         private readonly ResultError _resultError;
 
-        public DispatcherController(IDispatcherRepo disRepo, ResultError resultError)
+        public DriverController(IDriverRepo dirRepo, ResultError resultError)
         {
-            _disRepo = disRepo;
+            _dirRepo = dirRepo;
             _resultError = resultError;
         }
 
         [HttpGet]
-        public async Task<ActionResult>  Get()
+        public async Task<ActionResult> Get()
         {
             try
             {
-                var response = new ResponseData<IEnumerable<Dispatcher>>(StatusCodes.Status200OK, "Get All Dispatcher Successful!!", await _disRepo.Get());
+                var response = new ResponseData<IEnumerable<Driver>>(StatusCodes.Status200OK, "Get All Driver Successful!!", await _dirRepo.Get());
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -38,7 +38,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Get One Dispatcher Successful!!", await _disRepo.Get(id));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Get One Driver Successful!!", await _dirRepo.Get(id));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -48,11 +48,11 @@ namespace apis.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] Dispatcher dispatcher)
+        public async Task<ActionResult> Post([FromForm] Driver dispatcher)
         {
             try
             {
-                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Create New  Dispatcher Successful!!", await _disRepo.Create(dispatcher));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Create New Driver Successful!!", await _dirRepo.Create(dispatcher));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -62,11 +62,11 @@ namespace apis.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromForm] Dispatcher dispatcher)
+        public async Task<ActionResult> Put(int id, [FromForm] Driver driver)
         {
             try
             {
-                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Update Dispatcher Successful!!", await _disRepo.Put(id, dispatcher));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Update Driver Successful!!", await _dirRepo.Put(id, driver));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -76,11 +76,11 @@ namespace apis.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult>  Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Delete Dispatcher Successful!!", await _disRepo.Delete(id));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Delete Driver Successful!!", await _dirRepo.Delete(id));
                 return Ok(response);
             }
             catch (HttpException ex)

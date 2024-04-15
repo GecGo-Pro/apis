@@ -10,16 +10,16 @@ namespace apis.Controllers
     public class loginController : ControllerBase
     {
         private readonly ICustomerRepo _cusRepo;
-        private readonly ResultResponse _resultResponse;
+        private readonly ResultError _resultError;
 
-        public loginController(ICustomerRepo cusRepo, ResultResponse resultResponse)
+        public loginController(ICustomerRepo cusRepo, ResultError resultError)
         {
             _cusRepo = cusRepo;
-            _resultResponse = resultResponse;
+            _resultError = resultError;
         }
 
-        [HttpPost]
-        public  async Task<ActionResult> SendOTP(string phone)
+        [HttpPost("/dispatcher/send_otp")]
+        public async Task<ActionResult> SendOTP([FromForm] string phone)
         {
             try
             {
@@ -28,11 +28,11 @@ namespace apis.Controllers
             }
             catch (HttpException ex)
             {
-                return _resultResponse.GetActionResult(ex);
+                return _resultError.GetActionResult(ex);
             }
         }
-        [HttpPost("/verify_otp")]
-        public async Task<ActionResult> VeryfyOTP(string phone, string otp)
+        [HttpPost("dispatcher/verify_otp")]
+        public async Task<ActionResult> VeryfyOTP([FromForm] string phone, [FromForm] string otp)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace apis.Controllers
             }
             catch (HttpException ex)
             {
-                return _resultResponse.GetActionResult(ex);
+                return _resultError.GetActionResult(ex);
             }
         }
     }
