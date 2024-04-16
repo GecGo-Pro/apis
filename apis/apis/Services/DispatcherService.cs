@@ -68,10 +68,6 @@ namespace apis.Services
         public async Task<IEnumerable<Dispatcher>> Get()
         {
             var dispatchers = await _db.dispatchers.Where(d => d.deleted == 0).ToListAsync();
-            if (dispatchers.Count() == 0)
-            {
-                throw new HttpException(404, "Not found data available, please add data.");
-            }
             return dispatchers;
         }
 

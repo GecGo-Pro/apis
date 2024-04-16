@@ -64,10 +64,6 @@ namespace apis.Services
         public async Task<IEnumerable<Driver>> Get()
         {
             var getDriver = await _db.drivers.Where(d => d.deleted == 0).ToListAsync();
-            if (getDriver.Count() == 0)
-            {
-                throw new HttpException(404, "Not found data available, please add data.");
-            }
             return getDriver;
         }
 
