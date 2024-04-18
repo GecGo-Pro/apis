@@ -8,7 +8,7 @@ using System.Text;
 
 namespace apis.Services
 {
-    public class AuthService: IAuthRepo
+    public class AuthService : IAuthRepo
     {
 
         private readonly IConfiguration _config;

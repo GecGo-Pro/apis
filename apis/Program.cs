@@ -15,6 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("*")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddHttpClient<ITwilioRestClient, SendSmsService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -76,6 +86,7 @@ app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
+app.UseCors("AllowSpecificOrigin"); // Use the CORS policy
 
 app.UseAuthorization();
 

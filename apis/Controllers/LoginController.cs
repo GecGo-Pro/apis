@@ -5,25 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace apis.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
-    public class loginController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly ICustomerRepo _cusRepo;
         private readonly ResultError _resultError;
 
-        public loginController(ICustomerRepo cusRepo, ResultError resultError)
+        public LoginController(ICustomerRepo cusRepo, ResultError resultError)
         {
             _cusRepo = cusRepo;
             _resultError = resultError;
         }
 
-        [HttpPost("/dispatcher/send_otp")]
-        public async Task<ActionResult> SendOTP([FromForm] string phone)
+        [HttpPost("dispatcher/login")]
+        public async Task<ActionResult> SendOTP([FromBody] DispatcherLoginDTO dispatcherLoginBody)
         {
             try
             {
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!",  await _cusRepo.CreateOTP(phone) );
+                string phone = dispatcherLoginBody.Phone;
+                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!", await _cusRepo.CreateOTP(phone));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -31,13 +32,14 @@ namespace apis.Controllers
                 return _resultError.GetActionResult(ex);
             }
         }
+
         [HttpPost("dispatcher/verify_otp")]
-        public async Task<ActionResult> VeryfyOTP([FromForm] string phone, [FromForm] string otp)
+        public async Task<ActionResult> VeryfyOTP([FromBody] DispatcherVerifyOtpDTO dispatcherVerifyOtp)
         {
             try
             {
-                string token = await _cusRepo.VeryfyOTP(phone, otp);
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!",token);
+                string token = await _cusRepo.VeryfyOTP(dispatcherVerifyOtp.Phone, dispatcherVerifyOtp.Otp);
+                var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!", token);
                 return Ok(response);
             }
             catch (HttpException ex)
