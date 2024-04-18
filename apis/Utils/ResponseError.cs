@@ -4,14 +4,14 @@
     {
         public int Status { get; set; }
         public string? Error { get; set; }
-        public string? Detail { get; set; }
+        public string? Message { get; set; }
         public ResponseError(int status400BadRequest, Exception ex) { }
 
-        public ResponseError(int status, string error, string detail)
+        public ResponseError(int status, string error, string message)
         {
             Status = status;
             Error = error;
-            Detail = detail;
+            Message = message;
         }
     }
 }

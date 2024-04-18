@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace apis.Utils
 {
-    public class ResultError: ControllerBase
+    public class ExceptionError: ControllerBase
     {
             public ActionResult GetActionResult(HttpException ex)
             {

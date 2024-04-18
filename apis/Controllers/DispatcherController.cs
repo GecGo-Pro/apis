@@ -11,9 +11,9 @@ namespace apis.Controllers
     public class DispatcherController : ControllerBase
     {
         private readonly IDispatcherRepo _disRepo;
-        private readonly ResultError _resultError;
+        private readonly ExceptionError _resultError;
 
-        public DispatcherController(IDispatcherRepo disRepo, ResultError resultError)
+        public DispatcherController(IDispatcherRepo disRepo, ExceptionError resultError)
         {
             _disRepo = disRepo;
             _resultError = resultError;

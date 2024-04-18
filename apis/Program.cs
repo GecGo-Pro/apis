@@ -53,11 +53,11 @@ builder.Services.AddCors(o =>
     });
 });
 
-builder.Services.AddTransient<ResultError>();
+builder.Services.AddTransient<ExceptionError>();
 
 
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
-builder.Services.AddScoped<IAuthRepo, AuthService>();
+builder.Services.AddScoped<IAuthRepo, TokenService>();
 builder.Services.AddScoped<IDispatcherRepo, DispatcherService>();
 builder.Services.AddScoped<IDriverRepo, DriverService>();
 

@@ -8,17 +8,17 @@ using System.Text;
 
 namespace apis.Services
 {
-    public class AuthService: IAuthRepo
+    public class TokenService: IAuthRepo
     {
 
         private readonly IConfiguration _config;
 
-        public AuthService(IConfiguration config)
+        public TokenService(IConfiguration config)
         {
             this._config = config;
         }
 
-        public string TokenCustomer(Customer customer)
+        public string TokenCustomer(Customer customer, string role)
         {
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -27,7 +27,7 @@ namespace apis.Services
             {
                 new Claim("phone_number",customer.phone_number),
                 new Claim("name",customer.name),
-                new Claim(ClaimTypes.Role,"Customer")
+                new Claim(ClaimTypes.Role,role)
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims, expires: DateTime.Now.AddDays(1), signingCredentials: credential);
             return new JwtSecurityTokenHandler().WriteToken(token);

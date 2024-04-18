@@ -97,7 +97,7 @@ namespace apis.Services
             }
             try
             {
-                return _authRepo.TokenCustomer(existingCustomer);
+                return _authRepo.TokenCustomer(existingCustomer,"");
             }
             catch { throw new HttpException(500, "Generate invalid Token."); }
         }

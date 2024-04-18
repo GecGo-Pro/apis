@@ -4,6 +4,6 @@ namespace apis.IRepository
 {
     public interface IAuthRepo
     {
-        string TokenCustomer(Customer result_otp);
+        string TokenCustomer(Customer result_otp,string role);
     }
 }

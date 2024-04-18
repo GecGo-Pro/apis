@@ -10,9 +10,9 @@ namespace apis.Controllers
     public class loginController : ControllerBase
     {
         private readonly ICustomerRepo _cusRepo;
-        private readonly ResultError _resultError;
+        private readonly ExceptionError _resultError;
 
-        public loginController(ICustomerRepo cusRepo, ResultError resultError)
+        public loginController(ICustomerRepo cusRepo, ExceptionError resultError)
         {
             _cusRepo = cusRepo;
             _resultError = resultError;

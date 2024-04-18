@@ -11,12 +11,16 @@ namespace apis.Controllers
     public class DriverController : ControllerBase
     {
         private readonly IDriverRepo _dirRepo;
-        private readonly ResultError _resultError;
+        private readonly ExceptionError _resultError;
+        private readonly Variable _variable;
 
-        public DriverController(IDriverRepo dirRepo, ResultError resultError)
+        private string name = "Driver";
+
+        public DriverController(IDriverRepo dirRepo, ExceptionError resultError, Variable variable)
         {
             _dirRepo = dirRepo;
             _resultError = resultError;
+            _variable = variable;
         }
 
         [HttpGet]
@@ -24,7 +28,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<IEnumerable<Driver>>(StatusCodes.Status200OK, "Get All Driver Successful!!", await _dirRepo.Get());
+                var response = new ResponseData<IEnumerable<Driver>>(StatusCodes.Status200OK, _variable.GetAll(name), await _dirRepo.Get());
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -38,7 +42,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Get One Driver Successful!!", await _dirRepo.Get(id));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, _variable.GetOne(name), await _dirRepo.Get(id));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -52,7 +56,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Create New Driver Successful!!", await _dirRepo.Create(dispatcher));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, _variable.Post(name), await _dirRepo.Create(dispatcher));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -66,7 +70,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Update Driver Successful!!", await _dirRepo.Put(id, driver));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, _variable.Put(name), await _dirRepo.Put(id, driver));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -80,7 +84,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Delete Driver Successful!!", await _dirRepo.Delete(id));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, _variable.Delete(name), await _dirRepo.Delete(id));
                 return Ok(response);
             }
             catch (HttpException ex)
