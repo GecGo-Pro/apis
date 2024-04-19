@@ -9,21 +9,23 @@ namespace apis.Controllers
     [ApiController]
     public class loginController : ControllerBase
     {
-        private readonly ICustomerRepo _cusRepo;
+        private readonly ICustomerOTPRepo _cusOTPRepo;
+        private readonly IDispatcherOTPRepo _disOTPRepo;
         private readonly ExceptionError _resultError;
 
-        public loginController(ICustomerRepo cusRepo, ExceptionError resultError)
+        public loginController(ICustomerOTPRepo cusOTPRepo, IDispatcherOTPRepo disOTPRepo, ExceptionError resultError)
         {
-            _cusRepo = cusRepo;
+            _cusOTPRepo = cusOTPRepo;
+            _disOTPRepo = disOTPRepo;
             _resultError = resultError;
         }
 
-        [HttpPost("/dispatcher/send_otp")]
-        public async Task<ActionResult> SendOTP([FromForm] string phone)
+        [HttpPost("/customer/send_otp")]
+        public async Task<ActionResult> CustomerSendOTP([FromForm] string phone)
         {
             try
             {
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!",  await _cusRepo.CreateOTP(phone) );
+                var response = new ResponseData<string>(StatusCodes.Status200OK, "Send OTP successful!!",  await _cusOTPRepo.CreateOTP(phone) );
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -31,13 +33,40 @@ namespace apis.Controllers
                 return _resultError.GetActionResult(ex);
             }
         }
-        [HttpPost("dispatcher/verify_otp")]
-        public async Task<ActionResult> VeryfyOTP([FromForm] string phone, [FromForm] string otp)
+        [HttpPost("/customer/verify_otp")]
+        public async Task<ActionResult> CustomerVeryfyOTP([FromForm] string phone, [FromForm] string otp)
         {
             try
             {
-                string token = await _cusRepo.VeryfyOTP(phone, otp);
+                string token = await _cusOTPRepo.VeryfyOTP(phone, otp);
                 var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!",token);
+                return Ok(response);
+            }
+            catch (HttpException ex)
+            {
+                return _resultError.GetActionResult(ex);
+            }
+        }
+        [HttpPost("/dispatcher/send_otp")]
+        public async Task<ActionResult> DispatcherSendOTP([FromForm] string phone)
+        {
+            try
+            {
+                var response = new ResponseData<string>(StatusCodes.Status200OK, Variable.SendOTP("dispatcher"), await _disOTPRepo.CreateOTP(phone));
+                return Ok(response);
+            }
+            catch (HttpException ex)
+            {
+                return _resultError.GetActionResult(ex);
+            }
+        }
+        [HttpPost("/dispatcher/verify_otp")]
+        public async Task<ActionResult> DispatcherVeryfyOTP([FromForm] string phone, [FromForm] string otp)
+        {
+            try
+            {
+                string token = await _disOTPRepo.VeryfyOTP(phone, otp);
+                var response = new ResponseData<string>(StatusCodes.Status200OK, Variable.Login("dispatcher"), token);
                 return Ok(response);
             }
             catch (HttpException ex)

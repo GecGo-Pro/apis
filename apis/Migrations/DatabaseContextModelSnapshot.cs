@@ -58,7 +58,7 @@ namespace apis.Migrations
                         new
                         {
                             id = 1,
-                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8159),
+                            created_at = new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(9056),
                             deleted = 0,
                             driver_id = 1,
                             note = "",
@@ -113,7 +113,7 @@ namespace apis.Migrations
                         {
                             id = 1,
                             avatar = "",
-                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(7479),
+                            created_at = new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(8277),
                             deleted = 0,
                             latitude = "10.800102",
                             longitude = "106.665794",
@@ -201,7 +201,7 @@ namespace apis.Migrations
                         {
                             id = 1,
                             car_id = 1,
-                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8216),
+                            created_at = new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(9123),
                             customer_id = 1,
                             dispatcher_id = 1,
                             driver_id = 1,
@@ -240,6 +240,9 @@ namespace apis.Migrations
                     b.Property<int?>("otp")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("otp_life")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("phone_number")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -253,11 +256,12 @@ namespace apis.Migrations
                         {
                             id = 1,
                             avatar = "",
-                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8035),
+                            created_at = new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(8926),
                             deleted = 0,
                             email = "",
                             name = "Nguyen Van B",
                             otp = 654321,
+                            otp_life = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             phone_number = "01212345678"
                         });
                 });
@@ -318,7 +322,7 @@ namespace apis.Migrations
                         {
                             id = 1,
                             address = "HCM",
-                            created_at = new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8097),
+                            created_at = new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(8998),
                             deleted = 0,
                             is_active = 1,
                             latitude = "10.800450",

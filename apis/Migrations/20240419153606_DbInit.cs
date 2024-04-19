@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apis.Migrations
 {
     /// <inheritdoc />
-    public partial class DBInit : Migration
+    public partial class DbInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,6 +57,7 @@ namespace apis.Migrations
                     avatar = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     otp = table.Column<int>(type: "int", nullable: true),
+                    otp_life = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     deleted = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -191,27 +192,27 @@ namespace apis.Migrations
             migrationBuilder.InsertData(
                 table: "customers",
                 columns: new[] { "id", "avatar", "created_at", "deleted", "latitude", "longitude", "name", "otp", "otp_life", "phone_number" },
-                values: new object[] { 1, "", new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(7479), 0, "10.800102", "106.665794", "Nguyen Van A", 123456, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0123456789" });
+                values: new object[] { 1, "", new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(8277), 0, "10.800102", "106.665794", "Nguyen Van A", 123456, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0123456789" });
 
             migrationBuilder.InsertData(
                 table: "dispatchers",
-                columns: new[] { "id", "avatar", "created_at", "deleted", "email", "name", "otp", "phone_number" },
-                values: new object[] { 1, "", new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8035), 0, "", "Nguyen Van B", 654321, "01212345678" });
+                columns: new[] { "id", "avatar", "created_at", "deleted", "email", "name", "otp", "otp_life", "phone_number" },
+                values: new object[] { 1, "", new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(8926), 0, "", "Nguyen Van B", 654321, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "01212345678" });
 
             migrationBuilder.InsertData(
                 table: "drivers",
                 columns: new[] { "id", "address", "avatar", "created_at", "current_address", "deleted", "is_active", "latitude", "longitude", "name", "password", "phone_number", "status" },
-                values: new object[] { 1, "HCM", null, new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8097), null, 0, 1, "10.800450", "106.666357", "Nguyen Van C", "abcd", "1234234523", 0 });
+                values: new object[] { 1, "HCM", null, new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(8998), null, 0, 1, "10.800450", "106.666357", "Nguyen Van C", "abcd", "1234234523", 0 });
 
             migrationBuilder.InsertData(
                 table: "cars",
                 columns: new[] { "id", "color", "created_at", "deleted", "driver_id", "note", "number_plate", "type" },
-                values: new object[] { 1, null, new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8159), 0, 1, "", "49A 222222", "6 cho" });
+                values: new object[] { 1, null, new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(9056), 0, 1, "", "49A 222222", "6 cho" });
 
             migrationBuilder.InsertData(
                 table: "dispatch_jobs",
                 columns: new[] { "id", "cancell_reason", "car_id", "created_at", "customer_id", "dispatcher_id", "driver_id", "end_address", "end_date", "end_latitude", "end_longitude", "note", "start_address", "start_date", "start_latitude", "start_longitude", "status" },
-                values: new object[] { 1, null, 1, new DateTime(2024, 4, 13, 5, 40, 9, 475, DateTimeKind.Utc).AddTicks(8216), 1, 1, 1, "", null, "10.801418", "106.661530", null, "", null, "10.800102", "106.665794", 1 });
+                values: new object[] { 1, null, 1, new DateTime(2024, 4, 19, 15, 36, 5, 114, DateTimeKind.Utc).AddTicks(9123), 1, 1, 1, "", null, "10.801418", "106.661530", null, "", null, "10.800102", "106.665794", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_cars_driver_id",

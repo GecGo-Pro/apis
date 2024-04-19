@@ -7,14 +7,14 @@ using Twilio.Clients;
 
 namespace apis.Services
 {
-    public partial class CustomerService : ICustomerRepo
+    public class CustomerOTPService : ICustomerOTPRepo
     {
         private readonly DatabaseContext _db;
         private readonly IConfiguration _configuration;
         private readonly ITwilioRestClient _client;
-        private readonly IAuthRepo _authRepo;
+        private readonly ITokenRepo _authRepo;
 
-        public CustomerService(DatabaseContext db, IConfiguration configuration, ITwilioRestClient client, IAuthRepo authRepo)
+        public CustomerOTPService(DatabaseContext db, IConfiguration configuration, ITwilioRestClient client, ITokenRepo authRepo)
         {
             _db = db;
             _configuration = configuration;
@@ -97,7 +97,7 @@ namespace apis.Services
             }
             try
             {
-                return _authRepo.TokenCustomer(existingCustomer,"");
+                return _authRepo.TokenCustomer(existingCustomer);
             }
             catch { throw new HttpException(500, "Generate invalid Token."); }
         }

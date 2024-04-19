@@ -11,6 +11,7 @@ namespace apis.Models
         public required string name { get; set; }
         public string? avatar { get; set; }
         public int? otp { get; set; }
+        public DateTime otp_life { get; set; }
         public int? deleted { get; set; } = 0;
         public DateTime created_at { get; set; }= DateTime.UtcNow;
 

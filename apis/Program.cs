@@ -56,11 +56,14 @@ builder.Services.AddCors(o =>
 builder.Services.AddTransient<ExceptionError>();
 
 
-builder.Services.AddScoped<ICustomerRepo, CustomerService>();
-builder.Services.AddScoped<IAuthRepo, TokenService>();
+builder.Services.AddScoped<ICustomerOTPRepo, CustomerOTPService>();
+builder.Services.AddScoped<IDispatcherOTPRepo, DispatcherOTPService>();
+
 builder.Services.AddScoped<IDispatcherRepo, DispatcherService>();
 builder.Services.AddScoped<IDriverRepo, DriverService>();
 
+
+builder.Services.AddScoped<ITokenRepo, TokenService>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
