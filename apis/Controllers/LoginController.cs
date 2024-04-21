@@ -39,7 +39,7 @@ namespace apis.Controllers
             try
             {
                 string token = await _cusOTPRepo.VeryfyOTP(phone, otp);
-                var response = new ResponseData<string>(StatusCodes.Status200OK, "Login successful!!",token);
+                var response = new ResponseData<Token>(StatusCodes.Status200OK, "Login successful!!", new Token(token));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -66,7 +66,7 @@ namespace apis.Controllers
             try
             {
                 string token = await _disOTPRepo.VeryfyOTP(phone, otp);
-                var response = new ResponseData<string>(StatusCodes.Status200OK, Variable.Login("dispatcher"), token);
+                var response = new ResponseData<Token>(StatusCodes.Status200OK, Variable.Login("dispatcher"), new Token(token));
                 return Ok(response);
             }
             catch (HttpException ex)
