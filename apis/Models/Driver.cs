@@ -11,13 +11,13 @@ namespace apis.Models
         public required string phone_number{ get; set; }
         public required string name { get; set; }
         public required string password { get; set; }
-        public required string? address { get; set; }
+        public required string address { get; set; }
         public string? current_address { get; set; }
         public string? avatar { get; set; }
         public required string longitude { get; set; }
         public required string latitude { get; set; }
-        public int is_active { get; set; }
-        public int status { get; set; }
+        public int is_active { get; set; } = 0;
+        public int status { get; set; } = 0;
         public int? deleted { get; set; } = 0;
 
         public DateTime created_at { get; set; } = DateTime.UtcNow;

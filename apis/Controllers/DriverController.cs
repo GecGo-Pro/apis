@@ -50,11 +50,11 @@ namespace apis.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] Driver dispatcher)
+        public async Task<ActionResult> Post([FromBody] DriverDTO driverDTO)
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Post(name), await _dirRepo.Create(dispatcher));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Post(name), await _dirRepo.Create(driverDTO));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -64,11 +64,11 @@ namespace apis.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromForm] Driver driver)
+        public async Task<ActionResult> Put(int id, [FromBody] DriverDTO driverDTO)
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Put(name), await _dirRepo.Put(id, driver));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Put(name), await _dirRepo.Put(id, driverDTO));
                 return Ok(response);
             }
             catch (HttpException ex)

@@ -5,6 +5,7 @@ using apis.Services;
 using apis.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -41,7 +42,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-
+/*
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("MyAppCors", policy =>
@@ -51,7 +52,7 @@ builder.Services.AddCors(o =>
         .AllowAnyMethod()
         .AllowAnyOrigin();
     });
-});
+});*/
 
 builder.Services.AddTransient<ExceptionError>();
 
@@ -71,15 +72,19 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-/*if (app.Environment.IsProduction())
-{*/
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Image")),
+    RequestPath = "/Image"
+});
 
 app.UseHttpsRedirection();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

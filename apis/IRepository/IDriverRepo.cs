@@ -6,8 +6,8 @@ namespace apis.IRepository
     {
         Task<IEnumerable<Driver>> Get();
         Task<Driver> Get(int id);
-        Task<Driver> Create(Driver driver);
-        Task<Driver> Put(int id, Driver drive);
+        Task<Driver> Create(DriverDTO driverDTO);
+        Task<Driver> Put(int id, DriverDTO driverDTO);
         Task<Driver> Delete(int id);
     }
 }

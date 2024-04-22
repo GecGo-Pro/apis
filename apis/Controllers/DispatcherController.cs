@@ -1,6 +1,7 @@
 ﻿using apis.IRepository;
 using apis.Models;
 using apis.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -18,7 +19,7 @@ namespace apis.Controllers
             _disRepo = disRepo;
             _resultError = resultError;
         }
-
+        [Authorize(Roles = "Dispatcher")]
         [HttpGet]
         public async Task<ActionResult>  Get()
         {
@@ -48,11 +49,11 @@ namespace apis.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] Dispatcher dispatcher)
+        public async Task<ActionResult> Post([FromBody] DispatcherDTO dispatcherDTO)
         {
             try
             {
-                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Create New  Dispatcher Successful!!", await _disRepo.Create(dispatcher));
+                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Create New  Dispatcher Successful!!", await _disRepo.Create(dispatcherDTO));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -62,11 +63,11 @@ namespace apis.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromForm] Dispatcher dispatcher)
+        public async Task<ActionResult> Put(int id, [FromBody] DispatcherDTO dispatcherDTO)
         {
             try
             {
-                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Update Dispatcher Successful!!", await _disRepo.Put(id, dispatcher));
+                var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Update Dispatcher Successful!!", await _disRepo.Put(id, dispatcherDTO));
                 return Ok(response);
             }
             catch (HttpException ex)

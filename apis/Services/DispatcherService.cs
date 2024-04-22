@@ -17,8 +17,10 @@ namespace apis.Services
             _env = env;
         }
 
-        public async Task<Dispatcher> Create(Dispatcher dispatcher)
+        public async Task<Dispatcher> Create(DispatcherDTO dispatcherDTO)
         {
+
+            Dispatcher dispatcher = DataInput(dispatcherDTO);
             bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(dispatcher.phone_number);
             if (checkPhoneInvalid)
             {
@@ -81,8 +83,9 @@ namespace apis.Services
             return dispatcher;
         }
 
-        public async Task<Dispatcher> Put(int id, Dispatcher dispatcher)
+        public async Task<Dispatcher> Put(int id, DispatcherDTO dispatcherDTO)
         {
+            Dispatcher dispatcher = DataInput(dispatcherDTO);
             bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(dispatcher.phone_number);
             if (checkPhoneInvalid)
             {
@@ -106,13 +109,13 @@ namespace apis.Services
                 dispatcherExisting.email = dispatcher.email != null ? dispatcher.email : dispatcherExisting.email;
                 dispatcherExisting.name = dispatcher.name;
 
-                if (dispatcher.upload_image != null && dispatcherExisting.avatar!=null)
+                if (dispatcher.upload_image != null && dispatcherExisting.avatar != null)
                 {
                     UploadImage ul = new UploadImage(_env);
                     ul.Delete(dispatcherExisting.avatar, "Customer");
                 }
 
-                if(dispatcher.upload_image != null)
+                if (dispatcher.upload_image != null)
                 {
                     UploadImage ul = new UploadImage(_env);
                     string nameImage = await ul.Upload(dispatcher.upload_image, "Customer");
@@ -131,6 +134,16 @@ namespace apis.Services
             catch { throw new HttpException(500, "Update data Fail. Please try again!!"); }
         }
 
+        public Dispatcher DataInput(DispatcherDTO dispatcherDTO)
+        {
+            return new Dispatcher
+            {
+                name = dispatcherDTO.name,
+                email = dispatcherDTO.email,
+                phone_number = dispatcherDTO.phone_number,
+                upload_image = dispatcherDTO.upload_image
+            };
+        }
 
     }
 }
