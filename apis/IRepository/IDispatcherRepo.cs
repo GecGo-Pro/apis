@@ -6,8 +6,8 @@ namespace apis.IRepository
     {
         Task<IEnumerable<Dispatcher>> Get();
         Task<Dispatcher> Get(int id);
-        Task<Dispatcher> Create(Dispatcher dispatcher);
-        Task<Dispatcher> Put(int id, Dispatcher dispatcher);
+        Task<Dispatcher> Create(DispatcherDTO dispatcher);
+        Task<Dispatcher> Put(int id, DispatcherDTO dispatcher);
         Task<Dispatcher> Delete(int id);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using apis.IRepository;
 using apis.Models;
 using apis.Utils;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace apis.Services
@@ -18,8 +18,9 @@ namespace apis.Services
             _env = env;
         }
 
-        public async Task<Driver> Create(Driver driver)
+        public async Task<Driver> Create(DriverDTO driverDTO)
         {
+            Driver driver = DataInput(driverDTO);
             bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(driver.phone_number);
             if (checkPhoneInvalid)
             {
@@ -38,6 +39,9 @@ namespace apis.Services
                     string nameImage = await ul.Upload(driver.upload_image, "Driver");
                     driver.avatar = nameImage;
                 }
+
+                var passwordHasher = new PasswordHasher<Driver>();
+                var hashedPassword = passwordHasher.HashPassword(driver, driver.password);
                 await _db.drivers.AddAsync(driver);
                 await _db.SaveChangesAsync();
                 return driver;
@@ -77,8 +81,9 @@ namespace apis.Services
             return getDriver;
         }
 
-        public async Task<Driver> Put(int id, Driver driver)
+        public async Task<Driver> Put(int id, DriverDTO driverDTO)
         {
+            Driver driver = DataInput(driverDTO);
             bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(driver.phone_number);
             if (checkPhoneInvalid)
             {
@@ -118,6 +123,19 @@ namespace apis.Services
             catch { throw new HttpException(500, "Update data Fail. Please try again!!"); }
         }
 
-
+        public Driver DataInput(DriverDTO driverDTO)
+        {
+            return new Driver
+            {
+                phone_number = driverDTO.phone_number,
+                name = driverDTO.name,
+                password = BCrypt.Net.BCrypt.HashPassword(driverDTO.password),
+                address = driverDTO.address,
+                current_address = driverDTO.current_address,
+                longitude = driverDTO.longitude,
+                latitude = driverDTO.latitude,
+                upload_image = driverDTO.upload_image,
+            };
+        }
     }
 }

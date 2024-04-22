@@ -11,9 +11,11 @@ namespace apis.Controllers
     public class DriverController : ControllerBase
     {
         private readonly IDriverRepo _dirRepo;
-        private readonly ResultError _resultError;
+        private readonly ExceptionError _resultError;
 
-        public DriverController(IDriverRepo dirRepo, ResultError resultError)
+        private string name = "Driver";
+
+        public DriverController(IDriverRepo dirRepo, ExceptionError resultError)
         {
             _dirRepo = dirRepo;
             _resultError = resultError;
@@ -24,7 +26,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<IEnumerable<Driver>>(StatusCodes.Status200OK, "Get All Driver Successful!!", await _dirRepo.Get());
+                var response = new ResponseData<IEnumerable<Driver>>(StatusCodes.Status200OK, Variable.GetAll(name), await _dirRepo.Get());
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -38,7 +40,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Get One Driver Successful!!", await _dirRepo.Get(id));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.GetOne(name), await _dirRepo.Get(id));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -48,11 +50,11 @@ namespace apis.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] Driver dispatcher)
+        public async Task<ActionResult> Post([FromBody] DriverDTO driverDTO)
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Create New Driver Successful!!", await _dirRepo.Create(dispatcher));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Post(name), await _dirRepo.Create(driverDTO));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -62,11 +64,11 @@ namespace apis.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromForm] Driver driver)
+        public async Task<ActionResult> Put(int id, [FromBody] DriverDTO driverDTO)
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Update Driver Successful!!", await _dirRepo.Put(id, driver));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Put(name), await _dirRepo.Put(id, driverDTO));
                 return Ok(response);
             }
             catch (HttpException ex)
@@ -80,7 +82,7 @@ namespace apis.Controllers
         {
             try
             {
-                var response = new ResponseData<Driver>(StatusCodes.Status200OK, "Delete Driver Successful!!", await _dirRepo.Delete(id));
+                var response = new ResponseData<Driver>(StatusCodes.Status200OK, Variable.Delete(name), await _dirRepo.Delete(id));
                 return Ok(response);
             }
             catch (HttpException ex)

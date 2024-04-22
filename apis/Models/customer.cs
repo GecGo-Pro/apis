@@ -12,7 +12,7 @@ namespace apis.Models
         public required string latitude { get; set; }
         public int? otp { get; set; }
         public int? deleted { get; set; } = 0;
-        public DateTime otp_life { get; set; }
+        public DateTime otp_life { get; set; } = DateTime.UtcNow;
         public DateTime created_at { get; set; } = DateTime.UtcNow;
 
         [NotMapped]
