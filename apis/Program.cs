@@ -62,6 +62,7 @@ builder.Services.AddScoped<IDispatcherOTPRepo, DispatcherOTPService>();
 
 builder.Services.AddScoped<IDispatcherRepo, DispatcherService>();
 builder.Services.AddScoped<IDriverRepo, DriverService>();
+builder.Services.AddScoped<ICustomerRepo, CustomerService>();
 
 
 builder.Services.AddScoped<ITokenRepo, TokenService>();

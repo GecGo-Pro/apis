@@ -18,7 +18,7 @@ namespace apis.Models
         [NotMapped]
         public IFormFile? upload_image { get; set; }
 
-        public ICollection<DispatchJob>? dispatch_Jobs { get; set; }
+        public ICollection<DispatchJob>? dispatch_jobs { get; set; }
 
 
     }

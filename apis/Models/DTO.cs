@@ -40,4 +40,47 @@ namespace apis.Models
         public IFormFile? upload_image { get; set; }
 
     }
+    public class OptionsAsDesiredByPhone
+    {
+        public int? limit { get; set; }
+        public int? page { get; set; }
+        public string? sort_by { get; set; }
+    }
+
+    public class CustomerDTO
+    {
+        public int id { get; set; }
+        public required string phone_number { get; set; }
+        public required string name { get; set; }
+        public string? avatar { get; set; }
+        public required string longitude { get; set; }
+        public required string latitude { get; set; }
+        public DateTime created_at { get; set; } = DateTime.UtcNow;
+
+
+        public ICollection<DispatchJob>? dispatch_jobs { get; set; }
+
+        public int? page { get; set; }
+        public int? limit { get; set; }
+        public string? sort { get; set; }
+
+        public CustomerDTO(int id, string phone_number, string name, string? avatar, string longitude, string latitude, DateTime created_at, ICollection<DispatchJob>? dispatch_jobs, int? page, int? limit, string? sort)
+        {
+            this.id = id;
+            this.phone_number = phone_number;
+            this.name = name;
+            this.avatar = avatar;
+            this.longitude = longitude;
+            this.latitude = latitude;
+            this.created_at = created_at;
+            this.dispatch_jobs = dispatch_jobs;
+            this.page = page;
+            this.limit = limit;
+            this.sort = sort;
+        }
+
+        public CustomerDTO()
+        {
+        }
+    }
 }
