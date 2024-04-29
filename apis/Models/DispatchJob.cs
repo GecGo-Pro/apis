@@ -12,7 +12,7 @@ namespace apis.Models
         public required string end_latitude { get; set; }
         public required string start_address { get; set; }
         public required string end_address { get; set; }
-        public int status { get; set; }
+        public int status { get; set; }= 0;
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
         public string? note { get; set; }
