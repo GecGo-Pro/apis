@@ -8,6 +8,12 @@ back end with .NET
                 Install one of the following tools that supports mySQL:  laragon, xampp,....
                 Set up and run mySql.
                 Database already seeded in by code first method.
+       -   Setup dotnet for Visual Studio Code
+            ```
+            $ Install dotnet SDk 7.0 : https://dotnet.microsoft.com/en-us/download/dotnet/7.0
+            $ Install dotnet ef : open terminal enter : dotnet tool install --global dotnet-ef --version 7.00
+            $ install extension;
+            $ run : "dotnet run"       
                 
        -   Setup backend database
             ```
