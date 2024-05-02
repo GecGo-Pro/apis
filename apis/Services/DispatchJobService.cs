@@ -17,55 +17,32 @@ namespace apis.Services
             _env = env;
         }
 
-        // public async Task<DispatchJob> Create(DispatcherDTO dispatcherDTO)
-        // {
+        public async Task<DispatchJob> Create(DispatchJobDTO dispatchJobDTO)
+        {
 
-        //     Dispatcher dispatcher = DataInput(dispatcherDTO);
-        //     bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(dispatcher.phone_number);
-        //     if (checkPhoneInvalid)
-        //     {
-        //         throw new HttpException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. Ex:0367977xxx");
-        //     }
-        //     bool checkEmaiInValid = dispatcher.email != null && !MyRegex.RegexEmail().IsMatch(dispatcher.email);
-        //     if (checkEmaiInValid)
-        //     {
-        //         throw new HttpException(400, "Invalid Email. Please try again. Ex: xxx@xxx.xxx");
-        //     }
-        //     bool checkPhoneExist = await _db.dispatchers.SingleOrDefaultAsync(x => x.phone_number == dispatcher.phone_number) != null;
-        //     if (checkPhoneExist)
-        //     {
-        //         throw new HttpException(409, "Phone number already exists. Please try again with a different phone number.");
-        //     }
-        //     try
-        //     {
-        //         if (dispatcher.upload_image != null)
-        //         {
-        //             UploadImage ul = new UploadImage(_env);
-        //             string nameImage = await ul.Upload(dispatcher.upload_image, "Customer");
-        //             dispatcher.avatar = nameImage;
-        //         }
-        //         await _db.dispatchers.AddAsync(dispatcher);
-        //         await _db.SaveChangesAsync();
-        //         return dispatcher;
-        //     }
-        //     catch
-        //     {
-        //         throw new HttpException(500, "Create Dispatcher Fail. Please try again.");
-        //     }
+            DispatchJob dispatchJob = DataInput(dispatchJobDTO);
+            // bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(dispatchJob.phone_number);
+            // if (checkPhoneInvalid)
+            // {
+            //     throw new HttpException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters. Ex:0367977xxx");
+            // }
+            await _db.dispatch_jobs.AddAsync(dispatchJob);
+            await _db.SaveChangesAsync();
+            return dispatchJob;
 
-        // }
+        }
 
-        // public async Task<DispatchJob> Delete(int id)
-        // {
-        //     Dispatcher dispatcherExisting = await Get(id);
-        //     try
-        //     {
-        //         dispatcherExisting.deleted = 1;
-        //         await _db.SaveChangesAsync();
-        //         return dispatcherExisting;
-        //     }
-        //     catch { throw new HttpException(500, "Delete Dispatcher error."); }
-        // }
+        public async Task<DispatchJob> Delete(int id)
+        {
+            DispatchJob dispatchJobExisting = await Get(id);
+            try
+            {
+                _db.Remove(dispatchJobExisting);
+                await _db.SaveChangesAsync();
+                return dispatchJobExisting;
+            }
+            catch { throw new HttpException(500, "Delete Dispatcher error."); }
+        }
 
         public async Task<IEnumerable<DispatchJob>> Get()
         {
@@ -83,67 +60,72 @@ namespace apis.Services
             return dispatchJob;
         }
 
-        // public async Task<DispatchJob> Put(int id, DispatcherDTO dispatcherDTO)
-        // {
-        //     Dispatcher dispatcher = DataInput(dispatcherDTO);
-        //     bool checkPhoneInvalid = !MyRegex.RegexPhone().IsMatch(dispatcher.phone_number);
-        //     if (checkPhoneInvalid)
-        //     {
-        //         throw new HttpException(400, "Invalid phone number. Please enter a phone number that contains only digits, starts with 0, and has a length from 9 to 11 characters.");
-        //     }
-        //     bool checkEmailInValid = dispatcher.email != null ? !MyRegex.RegexEmail().IsMatch(dispatcher.email) : false;
-        //     if (checkEmailInValid)
-        //     {
-        //         throw new HttpException(400, "Invalid Email. Please try again. VD: xxx@xxx.xxx");
-        //     }
-        //     Dispatcher dispatcherExisting = await Get(id);
-        //     bool checkNumberExist = await _db.dispatchers.SingleOrDefaultAsync(x => x.phone_number == dispatcher.phone_number) != null
-        //                                       && dispatcherExisting.phone_number != dispatcher.phone_number;
+        public async Task<DispatchJob> Put(int id, DispatchJobDTO dispatchJobDTO)
+        {
+            DispatchJob getDispatchJob = await Get(id);
 
-        //     if (checkNumberExist)
-        //     {
-        //         throw new HttpException(409, "Phone number already exists. Please try again with a different phone number.");
-        //     }
-        //     try
-        //     {
-        //         dispatcherExisting.email = dispatcher.email != null ? dispatcher.email : dispatcherExisting.email;
-        //         dispatcherExisting.name = dispatcher.name;
+            getDispatchJob.start_longitude = dispatchJobDTO.start_longitude;
+            getDispatchJob.start_latitude = dispatchJobDTO.start_latitude;
+            getDispatchJob.end_longitude = dispatchJobDTO.end_longitude;
+            getDispatchJob.end_latitude = dispatchJobDTO.end_latitude;
+            getDispatchJob.start_address = dispatchJobDTO.start_address;
+            getDispatchJob.end_address = dispatchJobDTO.end_address;
+            if (dispatchJobDTO.start_date != null)
+            {
+                getDispatchJob.start_date = dispatchJobDTO.start_date;
+            }
+            if (dispatchJobDTO.end_date != null)
+            {
+                getDispatchJob.end_date = dispatchJobDTO.end_date;
+            }
+            if (dispatchJobDTO.note != null)
+            {
+                getDispatchJob.note = dispatchJobDTO.note;
+            }
+            if (dispatchJobDTO.cancell_reason != null)
+            {
+                getDispatchJob.cancell_reason = dispatchJobDTO.cancell_reason;
+            }
+            if (dispatchJobDTO.customer_id != 0)
+            {
+                getDispatchJob.customer_id = dispatchJobDTO.customer_id;
+            }
+            if (dispatchJobDTO.dispatcher_id != 0)
+            {
+                getDispatchJob.dispatcher_id = dispatchJobDTO.dispatcher_id;
+            }
+            if (dispatchJobDTO.driver_id != 0)
+            {
+                getDispatchJob.driver_id = dispatchJobDTO.driver_id;
+            }
+            if (dispatchJobDTO.car_id != 0)
+            {
+                getDispatchJob.car_id = dispatchJobDTO.car_id;
+            }
+            await _db.SaveChangesAsync();
+            return getDispatchJob;
+        }
 
-        //         if (dispatcher.upload_image != null && dispatcherExisting.avatar != null)
-        //         {
-        //             UploadImage ul = new UploadImage(_env);
-        //             ul.Delete(dispatcherExisting.avatar, "Customer");
-        //         }
-
-        //         if (dispatcher.upload_image != null)
-        //         {
-        //             UploadImage ul = new UploadImage(_env);
-        //             string nameImage = await ul.Upload(dispatcher.upload_image, "Customer");
-        //             dispatcherExisting.avatar = nameImage;
-        //         }
-
-        //         dispatcherExisting.avatar = dispatcher.avatar != null ? dispatcher.avatar : dispatcherExisting.avatar;
-        //         if (dispatcherExisting.phone_number != dispatcher.phone_number)
-        //         {
-        //             dispatcherExisting.phone_number = dispatcher.phone_number;
-        //         }
-
-        //         await _db.SaveChangesAsync();
-        //         return dispatcherExisting;
-        //     }
-        //     catch { throw new HttpException(500, "Update data Fail. Please try again!!"); }
-        // }
-
-        // public DispatchJob DataInput(DispatcherDTO dispatcherDTO)
-        // {
-        //     return new DispatchJob
-        //     {
-        //         name = dispatcherDTO.name,
-        //         email = dispatcherDTO.email,
-        //         phone_number = dispatcherDTO.phone_number,
-        //         upload_image = dispatcherDTO.upload_image
-        //     };
-        // }
+        public DispatchJob DataInput(DispatchJobDTO dispatchJobDTO)
+        {
+            return new DispatchJob
+            {
+                start_longitude = dispatchJobDTO.start_longitude,
+                start_latitude = dispatchJobDTO.start_latitude,
+                end_longitude = dispatchJobDTO.end_longitude,
+                end_latitude = dispatchJobDTO.end_latitude,
+                start_address = dispatchJobDTO.start_address,
+                end_address = dispatchJobDTO.end_address,
+                start_date = dispatchJobDTO.start_date,
+                end_date = dispatchJobDTO.end_date,
+                note = dispatchJobDTO.note,
+                cancell_reason = dispatchJobDTO.cancell_reason,
+                customer_id = dispatchJobDTO.customer_id,
+                dispatcher_id = dispatchJobDTO.dispatcher_id,
+                driver_id = dispatchJobDTO.driver_id,
+                car_id = dispatchJobDTO.car_id,
+            };
+        }
 
     }
 }

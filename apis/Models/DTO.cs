@@ -53,10 +53,10 @@ namespace apis.Models
         public string? note { get; set; }
         public string? cancell_reason { get; set; }
 
-        public int customer_id { get; set; }
-        public int dispatcher_id { get; set;}
-        public int? driver_id { get; set; }
-        public int? car_id { get; set; }
+        public int customer_id { get; set; } =0;
+        public int dispatcher_id { get; set;} =0;
+        public int? driver_id { get; set; } =0;
+        public int? car_id { get; set; } =0;
 
     }
 }

@@ -48,46 +48,46 @@ namespace apis.Controllers
             }
         }
 
-        // [HttpPost]
-        // public async Task<ActionResult> Post([FromBody] DispatcherDTO dispatcherDTO)
-        // {
-        //     try
-        //     {
-        //         var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Create New  Dispatcher Successful!!", await _disRepo.Create(dispatcherDTO));
-        //         return Ok(response);
-        //     }
-        //     catch (HttpException ex)
-        //     {
-        //         return _resultError.GetActionResult(ex);
-        //     }
-        // }
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] DispatchJobDTO dispatchJobDTO)
+        {
+            try
+            {
+                var response = new ResponseData<DispatchJob>(StatusCodes.Status200OK, "Create New  Dispatcher Successful!!", await _disJobRepo.Create(dispatchJobDTO));
+                return Ok(response);
+            }
+            catch (HttpException ex)
+            {
+                return _resultError.GetActionResult(ex);
+            }
+        }
 
-        // [HttpPut("{id}")]
-        // public async Task<ActionResult> Put(int id, [FromBody] DispatcherDTO dispatcherDTO)
-        // {
-        //     try
-        //     {
-        //         var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Update Dispatcher Successful!!", await _disRepo.Put(id, dispatcherDTO));
-        //         return Ok(response);
-        //     }
-        //     catch (HttpException ex)
-        //     {
-        //         return _resultError.GetActionResult(ex);
-        //     }
-        // }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] DispatchJobDTO dispatchJobDTO)
+        {
+            try
+            {
+                var response = new ResponseData<DispatchJob>(StatusCodes.Status200OK, "Update Dispatcher Successful!!", await _disJobRepo.Put(id, dispatchJobDTO));
+                return Ok(response);
+            }
+            catch (HttpException ex)
+            {
+                return _resultError.GetActionResult(ex);
+            }
+        }
 
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult>  Delete(int id)
-        // {
-        //     try
-        //     {
-        //         var response = new ResponseData<Dispatcher>(StatusCodes.Status200OK, "Delete Dispatcher Successful!!", await _disRepo.Delete(id));
-        //         return Ok(response);
-        //     }
-        //     catch (HttpException ex)
-        //     {
-        //         return _resultError.GetActionResult(ex);
-        //     }
-        // }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult>  Delete(int id)
+        {
+            try
+            {
+                var response = new ResponseData<DispatchJob>(StatusCodes.Status200OK, "Delete Dispatcher Successful!!", await _disJobRepo.Delete(id));
+                return Ok(response);
+            }
+            catch (HttpException ex)
+            {
+                return _resultError.GetActionResult(ex);
+            }
+        }
     }
 }
